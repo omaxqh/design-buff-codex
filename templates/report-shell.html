@@ -1,0 +1,666 @@
+<!doctype html>
+<html lang="{{report_language}}">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="design-buff-template" content="human-report-html-v1">
+  <title>{{project_name}} - Design Buff Review</title>
+  <style>
+    :root {
+      color-scheme: light;
+      --bg: #efe7dc;
+      --paper: rgba(255, 251, 246, 0.92);
+      --paper-strong: #fffaf4;
+      --ink: #1f1a17;
+      --muted: #695d55;
+      --line: rgba(76, 61, 50, 0.16);
+      --accent: #a44a2f;
+      --accent-soft: rgba(164, 74, 47, 0.12);
+      --support: #275a58;
+      --support-soft: rgba(39, 90, 88, 0.12);
+      --shadow: 0 24px 72px rgba(64, 43, 28, 0.12);
+      --shadow-soft: 0 14px 36px rgba(64, 43, 28, 0.08);
+      --radius-xl: 32px;
+      --radius-lg: 22px;
+      --radius-md: 16px;
+      --content: min(1320px, calc(100vw - 28px));
+      --serif: "Iowan Old Style", "Palatino Linotype", "Book Antiqua", Georgia, serif;
+      --sans: "Avenir Next", "Segoe UI", "PingFang SC", "Hiragino Sans GB", "Noto Sans SC", sans-serif;
+      --mono: "SFMono-Regular", "IBM Plex Mono", "Menlo", monospace;
+    }
+
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+
+    body {
+      margin: 0;
+      color: var(--ink);
+      font-family: var(--sans);
+      font-size: 16px;
+      line-height: 1.6;
+      background:
+        radial-gradient(circle at top left, rgba(164, 74, 47, 0.14), transparent 24%),
+        radial-gradient(circle at 88% 12%, rgba(39, 90, 88, 0.12), transparent 18%),
+        linear-gradient(180deg, #f6f0e8 0%, var(--bg) 100%);
+    }
+
+    .page {
+      width: var(--content);
+      margin: 24px auto 64px;
+      display: grid;
+      gap: 22px;
+    }
+
+    .hero,
+    .section,
+    .issue-card,
+    .track-card,
+    .flow-card,
+    .timeline-card {
+      border: 1px solid var(--line);
+      background: var(--paper);
+      box-shadow: var(--shadow-soft);
+      backdrop-filter: blur(12px);
+    }
+
+    .hero {
+      position: relative;
+      overflow: hidden;
+      border-radius: var(--radius-xl);
+      padding: 28px;
+      display: grid;
+      gap: 24px;
+      grid-template-columns: minmax(0, 1.26fr) minmax(280px, 360px);
+      align-items: start;
+      box-shadow: var(--shadow);
+    }
+
+    .hero-main {
+      display: flex;
+      flex-direction: column;
+      align-self: stretch;
+      min-height: 100%;
+    }
+
+    .hero::after {
+      content: "";
+      position: absolute;
+      inset: auto -80px -120px auto;
+      width: 260px;
+      height: 260px;
+      background: radial-gradient(circle, rgba(164, 74, 47, 0.16), transparent 68%);
+      pointer-events: none;
+    }
+
+    .eyebrow,
+    .chip,
+    .meta-chip {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 7px 12px;
+      border-radius: 999px;
+      font-size: 12px;
+      letter-spacing: 0.04em;
+      background: var(--accent-soft);
+      color: var(--accent);
+      border: 1px solid rgba(164, 74, 47, 0.12);
+    }
+
+    .meta-chip,
+    .chip {
+      background: rgba(255, 255, 255, 0.58);
+      color: var(--muted);
+      font-family: var(--mono);
+      letter-spacing: 0;
+    }
+
+    .hero h1 {
+      margin: 12px 0 24px;
+      font-family: var(--serif);
+      font-size: clamp(32px, 4.1vw, 58px);
+      line-height: 1.02;
+      letter-spacing: -0.04em;
+      max-width: none;
+    }
+
+    .lede {
+      margin: 0;
+      max-width: none;
+      font-size: 18px;
+      color: var(--muted);
+    }
+
+    .chip-row {
+      margin-top: auto;
+      padding-top: 28px;
+      align-self: flex-start;
+    }
+
+    .hero-panel {
+      display: grid;
+      gap: 14px;
+      align-content: start;
+      padding: 18px;
+      border-radius: var(--radius-lg);
+      background: linear-gradient(180deg, rgba(255, 250, 244, 0.9), rgba(250, 243, 235, 0.82));
+      border: 1px solid rgba(76, 61, 50, 0.1);
+    }
+
+    .kicker {
+      display: grid;
+      gap: 10px;
+      font-family: var(--mono);
+      font-size: 13px;
+      color: var(--muted);
+    }
+
+    .diagnosis {
+      display: grid;
+      gap: 10px;
+      padding-top: 10px;
+      border-top: 1px solid var(--line);
+    }
+
+    .diagnosis strong {
+      display: block;
+      font-size: 13px;
+      font-family: var(--mono);
+      color: var(--support);
+      letter-spacing: 0.02em;
+      text-transform: uppercase;
+    }
+
+    .diagnosis p {
+      margin: 0;
+      font-size: 18px;
+      color: var(--ink);
+    }
+
+    .chip-row,
+    .evidence-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+    }
+
+    .section {
+      border-radius: var(--radius-lg);
+      padding: 24px;
+      display: grid;
+      gap: 18px;
+    }
+
+    .section-header {
+      display: grid;
+      gap: 8px;
+      align-items: start;
+      border-bottom: 1px solid var(--line);
+      padding-bottom: 14px;
+    }
+
+    .section-header h2,
+    .priority-card h2 {
+      margin: 0;
+      font-family: var(--serif);
+      font-size: clamp(24px, 2.6vw, 34px);
+      line-height: 1.06;
+      letter-spacing: -0.03em;
+    }
+
+    .section-header p {
+      margin: 0;
+      max-width: 56ch;
+      color: var(--muted);
+    }
+
+    .two-col,
+    .three-col {
+      display: grid;
+      gap: 18px;
+    }
+
+    .two-col { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    .three-col { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+
+    .panel {
+      padding: 16px 18px;
+      border-radius: var(--radius-md);
+      background: rgba(255, 255, 255, 0.52);
+      border: 1px solid rgba(76, 61, 50, 0.1);
+    }
+
+    .panel h3 {
+      margin: 0 0 8px;
+      font-size: 14px;
+      line-height: 1.6;
+      font-weight: 600;
+      letter-spacing: 0;
+      font-family: var(--sans);
+      color: var(--ink);
+    }
+
+    .panel p,
+    .panel ul,
+    .panel ol {
+      margin: 0;
+      font-size: 16px;
+      line-height: 1.72;
+    }
+
+    .priority-card {
+      display: grid;
+      gap: 18px;
+      padding: 24px;
+      border-radius: var(--radius-xl);
+      background:
+        linear-gradient(145deg, rgba(255, 250, 244, 0.96), rgba(247, 237, 226, 0.92)),
+        radial-gradient(circle at 88% 14%, rgba(164, 74, 47, 0.12), transparent 34%);
+      border: 1px solid rgba(76, 61, 50, 0.14);
+      box-shadow: var(--shadow);
+    }
+
+    .priority-grid,
+    .actions-grid {
+      display: grid;
+      gap: 18px;
+      grid-template-columns: minmax(0, 1.2fr) minmax(280px, 0.8fr);
+    }
+
+    .issue-list,
+    .track-list,
+    .flow-list {
+      display: grid;
+      gap: 18px;
+    }
+
+    .issue-card,
+    .track-card,
+    .flow-card {
+      border-radius: var(--radius-lg);
+      padding: 22px;
+      display: grid;
+      gap: 14px;
+    }
+
+    .issue-card header,
+    .track-card header,
+    .flow-card header {
+      display: flex;
+      justify-content: space-between;
+      gap: 16px;
+      align-items: baseline;
+      border-bottom: 1px solid var(--line);
+      padding-bottom: 12px;
+    }
+
+    .issue-card > header h3,
+    .track-card > header h3,
+    .flow-card > header h3 {
+      margin: 0;
+      font-size: 24px;
+      line-height: 1.05;
+    }
+
+    .issue-meta {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      color: var(--muted);
+      font-family: var(--mono);
+      font-size: 12px;
+    }
+
+    .split-list {
+      display: grid;
+      gap: 12px;
+    }
+
+    .split-list .row {
+      display: grid;
+      gap: 8px;
+      grid-template-columns: minmax(120px, 180px) minmax(0, 1fr);
+      align-items: start;
+      padding-top: 10px;
+      border-top: 1px solid rgba(76, 61, 50, 0.08);
+    }
+
+    .timeline {
+      display: grid;
+      gap: 18px;
+    }
+
+    .timeline-node {
+      display: grid;
+      grid-template-columns: 180px minmax(0, 1fr);
+      gap: 18px;
+      align-items: stretch;
+    }
+
+    .timeline-stage {
+      display: grid;
+      grid-template-rows: auto auto 1fr;
+      gap: 10px;
+      align-items: start;
+      align-self: stretch;
+    }
+
+    .timeline-stage::after {
+      content: "";
+      grid-row: 3;
+      justify-self: start;
+      margin-left: 15px;
+      width: 1px;
+      height: calc(100% + 18px);
+      background: rgba(76, 61, 50, 0.14);
+    }
+
+    .timeline-node:last-child .timeline-stage::after {
+      display: none;
+    }
+
+    .timeline-dot {
+      width: 32px;
+      height: 32px;
+      border-radius: 999px;
+      display: grid;
+      place-items: center;
+      border: 1px solid rgba(164, 74, 47, 0.22);
+      background: var(--paper-strong);
+      color: var(--accent);
+      font-family: var(--mono);
+      font-size: 12px;
+      box-shadow: var(--shadow-soft);
+    }
+
+    .timeline-stage-text {
+      grid-row: 2;
+      display: grid;
+      gap: 4px;
+    }
+
+    .timeline-stage-title {
+      font-size: 15px;
+      font-weight: 600;
+      line-height: 1.5;
+      color: var(--ink);
+    }
+
+    .timeline-stage-summary {
+      font-size: 13px;
+      line-height: 1.6;
+      color: var(--muted);
+    }
+
+    .timeline-card {
+      border-radius: var(--radius-lg);
+      padding: 18px;
+      display: grid;
+      gap: 14px;
+    }
+
+    .timeline-summary {
+      margin: 0;
+      font-size: 16px;
+      line-height: 1.72;
+      color: var(--ink);
+    }
+
+    .timeline-block {
+      display: grid;
+      gap: 8px;
+    }
+
+    .timeline-block + .timeline-block {
+      padding-top: 14px;
+      border-top: 1px solid rgba(76, 61, 50, 0.08);
+    }
+
+    .timeline-block h3 {
+      margin: 0;
+      font-size: 15px;
+      line-height: 1.6;
+      font-weight: 600;
+      color: var(--ink);
+    }
+
+    .timeline-block p {
+      margin: 0;
+      font-size: 16px;
+      line-height: 1.72;
+    }
+
+    .inline-label {
+      font-weight: 600;
+      color: var(--ink);
+    }
+
+    .label {
+      font-family: var(--mono);
+      font-size: 12px;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      color: var(--muted);
+    }
+
+    .ordered-actions {
+      margin: 0;
+      padding-left: 18px;
+      display: grid;
+      gap: 10px;
+    }
+
+    .footer-note {
+      color: var(--muted);
+      font-size: 13px;
+      font-family: var(--mono);
+    }
+
+    @media (max-width: 1080px) {
+      .priority-grid,
+      .actions-grid,
+      .two-col,
+      .three-col {
+        grid-template-columns: 1fr;
+      }
+      .hero {
+        grid-template-columns: minmax(0, 1fr) minmax(280px, 320px);
+      }
+    }
+
+    @media (max-width: 920px) {
+      .hero,
+      .priority-grid,
+      .actions-grid,
+      .two-col,
+      .three-col {
+        grid-template-columns: 1fr;
+      }
+      .timeline-node {
+        grid-template-columns: 104px minmax(0, 1fr);
+        gap: 12px;
+      }
+      .timeline-stage-text {
+        gap: 2px;
+      }
+      .timeline-stage-summary {
+        display: none;
+      }
+      .chip-row {
+        max-width: 100%;
+      }
+    }
+
+    @media (max-width: 720px) {
+      .page { width: min(100vw - 20px, 100%); margin: 12px auto 42px; }
+      .hero, .section, .issue-card, .track-card, .flow-card, .timeline-card, .priority-card { padding: 18px; }
+      .hero h1 { max-width: none; }
+      .split-list .row { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body data-design-buff-report="v1">
+  <main class="page">
+    <section class="hero" id="review-overview">
+      <div class="hero-main">
+        <span class="eyebrow">{{report_mode_label}}</span>
+        <h1>{{project_name}}</h1>
+        <p class="lede">{{overall_diagnosis}}</p>
+        <div class="chip-row">
+          <span class="chip">slug: {{review_slug}}</span>
+          <span class="chip">date: {{review_date}}</span>
+          <span class="chip">lang: {{report_language}}</span>
+          <span class="chip">ingest: {{ingest_status}}</span>
+        </div>
+      </div>
+      <aside class="hero-panel" id="executive-summary">
+        <div class="kicker">
+          <span>reviewer: {{reviewer}}</span>
+          <span>figma: {{figma_file_key}}</span>
+          <span>node: {{figma_intake_node}}</span>
+        </div>
+        <div class="diagnosis">
+          <strong>{{verdict_label}}</strong>
+          <p>{{current_verdict}}</p>
+          <div class="evidence-row">
+            <span class="meta-chip">{{top_priority_1}}</span>
+            <span class="meta-chip">{{top_priority_2}}</span>
+            <span class="meta-chip">{{top_priority_3}}</span>
+          </div>
+        </div>
+      </aside>
+    </section>
+
+    <section class="section" id="changes-since-last-review">
+      <div class="section-header">
+        <h2>{{changes_title}}</h2>
+      </div>
+      <div class="three-col">
+        <div class="panel"><h3>{{new_issues_label}}</h3><p>{{new_issues}}</p></div>
+        <div class="panel"><h3>{{resolved_issues_label}}</h3><p>{{resolved_issues}}</p></div>
+        <div class="panel"><h3>{{changed_issues_label}}</h3><p>{{changed_issues}}</p></div>
+      </div>
+    </section>
+
+    <section class="priority-card" id="highest-priority-issue">
+      <div class="section-header">
+        <h2>{{highest_priority_title}}</h2>
+      </div>
+      <div class="priority-grid">
+        <div class="split-list">
+          <div class="panel">
+            <h3>{{issue_label}}</h3>
+            <p>{{highest_priority_display_number}} · {{highest_priority_title}}</p>
+            <p class="footer-note">{{highest_priority_stable_id}} · {{highest_priority_severity}} · {{highest_priority_confidence}}</p>
+          </div>
+          <div class="panel">
+            <h3>{{diagnosis_label}}</h3>
+            <p>{{highest_priority_diagnosis_paragraph}}</p>
+          </div>
+          <div class="panel">
+            <h3>{{why_first_label}}</h3>
+            <p>{{highest_priority_why_first_paragraph}}</p>
+          </div>
+        </div>
+        <div class="panel">
+          <h3>{{recommended_direction_label}}</h3>
+          <p>{{highest_priority_recommended_direction_paragraph}}</p>
+          <h3 style="margin-top:16px;">{{need_to_confirm_label}}</h3>
+          <p>{{highest_priority_need_to_confirm}}</p>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="background-and-evidence">
+      <div class="section-header">
+        <h2>{{background_title}}</h2>
+      </div>
+      <div class="two-col">
+        <div class="panel">{{background_and_evidence_html}}</div>
+        <div class="panel">{{review_boundaries_html}}</div>
+      </div>
+    </section>
+
+    <section class="section" id="full-review">
+      <div class="section-header">
+        <h2>{{full_review_title}}</h2>
+      </div>
+      <div class="issue-list" id="issue-list">
+        <article class="issue-card">
+          <header>
+            <h3>{{issue_display_number}} · {{issue_title}}</h3>
+            <div class="issue-meta">{{issue_category}} · {{issue_severity}} · {{issue_confidence}}</div>
+          </header>
+          <div class="split-list">
+            <div class="panel">
+              <h3>{{diagnosis_label}}</h3>
+              <p>{{issue_diagnosis_paragraph}}</p>
+            </div>
+            <div class="panel">
+              <h3>{{recommended_direction_label}}</h3>
+              <p>{{issue_recommended_direction_paragraph}}</p>
+            </div>
+            <div class="panel">
+              <h3>{{need_to_confirm_label}}</h3>
+              <p>{{issue_need_to_confirm}}</p>
+            </div>
+          </div>
+        </article>
+      </div>
+    </section>
+
+    <section class="section" id="three-flow-consistency">
+      <div class="section-header">
+        <h2>{{three_flow_title}}</h2>
+      </div>
+      <div class="timeline">{{timeline_nodes_html}}</div>
+      <div class="panel">
+        <h3>{{three_flow_synthesis_label}}</h3>
+        <p>{{three_flow_synthesis_paragraph}}</p>
+      </div>
+    </section>
+
+    <section class="section" id="resolution-tracks">
+      <div class="section-header">
+        <h2>{{resolution_tracks_title}}</h2>
+      </div>
+      <div class="three-col">
+        <div class="panel">
+          <h3>{{issue_distribution_label}}</h3>
+          <p>{{issue_distribution_paragraph}}</p>
+        </div>
+        <div class="panel">
+          <h3>{{resolution_paths_label}}</h3>
+          <p>{{resolution_paths_paragraph}}</p>
+        </div>
+        <div class="panel">
+          <h3>{{key_risk_label}}</h3>
+          <p>{{key_risk_paragraph}}</p>
+        </div>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="section-header">
+        <h2>{{actions_title}}</h2>
+      </div>
+      <div class="actions-grid">
+        <div class="panel" id="open-questions">
+          <h3>{{open_questions_title}}</h3>
+          <ol class="ordered-actions">
+            <li>{{open_question}}</li>
+          </ol>
+        </div>
+        <div class="panel" id="next-actions">
+          <h3>{{next_actions_title}}</h3>
+          <ol class="ordered-actions">
+            <li>{{next_action}}</li>
+          </ol>
+        </div>
+      </div>
+    </section>
+
+    <p class="footer-note">{{footer_note}}</p>
+  </main>
+</body>
+</html>
