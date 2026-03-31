@@ -507,17 +507,17 @@
         <h1>{{project_name}}</h1>
         <p class="lede">{{overall_diagnosis}}</p>
         <div class="chip-row">
-          <span class="chip">slug: {{review_slug}}</span>
-          <span class="chip">date: {{review_date}}</span>
-          <span class="chip">lang: {{report_language}}</span>
-          <span class="chip">ingest: {{ingest_status}}</span>
+          <span class="chip">{{review_slug_chip_label}}: {{review_slug}}</span>
+          <span class="chip">{{review_date_chip_label}}: {{review_date}}</span>
+          <span class="chip">{{report_language_chip_label}}: {{report_language}}</span>
+          <span class="chip">{{ingest_status_chip_label}}: {{ingest_status}}</span>
         </div>
       </div>
       <aside class="hero-panel" id="executive-summary">
         <div class="kicker">
-          <span>reviewer: {{reviewer}}</span>
-          <span>figma: {{figma_file_key}}</span>
-          <span>node: {{figma_intake_node}}</span>
+          <span>{{reviewer_label}}: {{reviewer}}</span>
+          <span>{{figma_file_label}}: {{figma_file_key}}</span>
+          <span>{{figma_node_label}}: {{figma_intake_node}}</span>
         </div>
         <div class="diagnosis">
           <strong>{{verdict_label}}</strong>

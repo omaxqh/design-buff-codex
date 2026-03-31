@@ -31,6 +31,34 @@ FORBIDDEN_KEYS: Set[str] = {
 }
 
 HTML_LANG_RE = re.compile(r"<html[^>]*\blang=[\"']([^\"']+)[\"']", re.IGNORECASE)
+REQUIRED_SECTION_IDS: Set[str] = {
+    "review-overview",
+    "executive-summary",
+    "highest-priority-issue",
+    "background-and-evidence",
+    "full-review",
+    "issue-list",
+    "three-flow-consistency",
+    "resolution-tracks",
+    "open-questions",
+    "next-actions",
+}
+ENGLISH_SCAFFOLD_TOKENS: Set[str] = {
+    "Executive Summary",
+    "Issue List",
+    "Resolution Tracks",
+    "Open Questions",
+    "Next Actions",
+    "Background and Evidence",
+    "Full Review",
+    "Three-Flow Consistency",
+    "Project",
+    "Review Slug",
+    "Review Date",
+    "Top Priority",
+    "Verdict",
+    "Intake",
+}
 
 
 def collect_keys(value) -> Iterable[str]:
@@ -78,6 +106,27 @@ def validate_report_html(report_path: Path, state: Dict, errors: List[str]) -> N
             errors.append(
                 f"{report_path}: html lang '{lang_match.group(1)}' does not match meta.report_language '{report_language}'"
             )
+
+    for section_id in REQUIRED_SECTION_IDS:
+        if f'id="{section_id}"' not in html and f"id='{section_id}'" not in html:
+            errors.append(f"{report_path}: missing required section id '{section_id}'")
+
+    issues = state.get("issues", [])
+    for issue in issues:
+        stable_id = issue.get("stable_id")
+        display_number = issue.get("display_number")
+        if stable_id and stable_id not in html:
+            errors.append(f"{report_path}: missing issue stable_id '{stable_id}' in human report")
+        if display_number and display_number not in html:
+            errors.append(f"{report_path}: missing issue display number '{display_number}' in human report")
+
+    report_language = state.get("meta", {}).get("report_language", "")
+    if report_language.startswith("zh"):
+        for token in sorted(ENGLISH_SCAFFOLD_TOKENS):
+            if token in html:
+                errors.append(
+                    f"{report_path}: report_language is '{report_language}' but contains English scaffold token '{token}'"
+                )
 
 
 def validate_review_root(review_root: Path, errors: List[str], warnings: List[str]) -> None:

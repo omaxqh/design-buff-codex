@@ -57,6 +57,7 @@ design-buff-reviews/<review-slug>/
 - 把语言决策来源写进 `meta.language_source`
 - 在 `report.html` 里设置 `<html lang="...">`
 - 除非用户明确要求双语，否则标签、标题和叙述都使用选中的报告语言
+- `report_language` 是 `zh-CN` 时，不要保留英文脚手架标题或 meta 标签，例如 `Executive Summary`、`Issue List`、`Resolution Tracks`、`Open Questions`、`Next Actions`、`Project`、`Review Slug`
 - 产品名、node ID 和一旦翻译就会丢精度的原文，保持原样
 
 语言信号混杂或互相打架时，用 `scripts/detect_report_language.py`。
@@ -70,6 +71,18 @@ design-buff-reviews/<review-slug>/
 - `<body data-design-buff-report="v1">`
 
 这些标记让校验器能确认人类报告是否符合包内合同。
+
+## 落盘自检
+
+写出文件后，必须做一次 contract self-check。
+
+至少确认这些点：
+
+- `report.html` 和 `review-state.json` 都在同一个 `design-buff-reviews/<review-slug>/` 下
+- 所有必备章节 id 都存在
+- `Highest-Priority Issue` 和 `Full Review` 都把 `stable_id` 渲染进了面向人的报告
+- `report_language` 是 `zh-CN` 时，界面标签没有混入英文脚手架
+- 如果运行时允许，执行 `scripts/validate_review_contract.py <project-root>`，没过就继续修
 
 ## 必备章节
 
@@ -328,6 +341,6 @@ hidden scratch 放在 `.design-buff/<review-slug>/` 下。
 
 ## 模板基准
 
-结构和样式以 `templates/report-shell.html` 为基准。
+结构和样式以 `templates/report-shell.html` 为固定 shell 基准，不是可随意改写的灵感来源。
 视觉语境以 `references/report-style-context.md` 为基准。
 最终结果必须看起来仍然来自同一套设计系统。
