@@ -1,0 +1,807 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="design-buff-template" content="human-report-html-v1">
+  <title>一通百 2025 - 万豪开通/绑定流程 - 设计评审报告</title>
+  <style>
+    :root {
+      color-scheme: light;
+      --bg: #efe7dc;
+      --paper: rgba(255, 251, 246, 0.95);
+      --paper-strong: #fffaf4;
+      --ink: #201a16;
+      --muted: #6a5e56;
+      --line: rgba(76, 61, 50, 0.14);
+      --accent: #a24f34;
+      --accent-soft: rgba(162, 79, 52, 0.12);
+      --support: #285754;
+      --support-soft: rgba(40, 87, 84, 0.1);
+      --shadow: 0 24px 72px rgba(64, 43, 28, 0.12);
+      --shadow-soft: 0 14px 36px rgba(64, 43, 28, 0.08);
+      --radius-xl: 30px;
+      --radius-lg: 22px;
+      --radius-md: 16px;
+      --content: min(1320px, calc(100vw - 28px));
+      --serif: "Songti SC", "Noto Serif SC", Georgia, serif;
+      --sans: "PingFang SC", "Hiragino Sans GB", "Noto Sans SC", "Segoe UI", sans-serif;
+      --mono: "SFMono-Regular", "IBM Plex Mono", Menlo, monospace;
+    }
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body {
+      margin: 0;
+      color: var(--ink);
+      font-family: var(--sans);
+      font-size: 16px;
+      line-height: 1.72;
+      background:
+        radial-gradient(circle at top left, rgba(162, 79, 52, 0.14), transparent 24%),
+        radial-gradient(circle at 88% 12%, rgba(40, 87, 84, 0.12), transparent 18%),
+        linear-gradient(180deg, #f6f0e8 0%, var(--bg) 100%);
+    }
+    code {
+      font-family: var(--mono);
+      font-size: .94em;
+    }
+    .page {
+      width: var(--content);
+      margin: 24px auto 64px;
+      display: grid;
+      gap: 22px;
+    }
+    .hero, .section, .priority-card, .issue-card, .track-card, .flow-card, .timeline-card {
+      border: 1px solid var(--line);
+      background: var(--paper);
+      box-shadow: var(--shadow-soft);
+      backdrop-filter: blur(12px);
+    }
+    .hero {
+      position: relative;
+      overflow: hidden;
+      border-radius: var(--radius-xl);
+      padding: 30px;
+      display: grid;
+      gap: 24px;
+      grid-template-columns: minmax(0, 1.26fr) minmax(280px, 360px);
+      align-items: start;
+      box-shadow: var(--shadow);
+    }
+    .hero-main {
+      display: flex;
+      flex-direction: column;
+      align-self: stretch;
+      min-height: 100%;
+    }
+    .hero::after {
+      content: "";
+      position: absolute;
+      inset: auto -80px -120px auto;
+      width: 280px;
+      height: 280px;
+      background: radial-gradient(circle, rgba(162, 79, 52, 0.15), transparent 68%);
+      pointer-events: none;
+    }
+    .eyebrow, .chip, .meta-chip {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 7px 12px;
+      border-radius: 999px;
+      font-size: 12px;
+      letter-spacing: .04em;
+      border: 1px solid rgba(162, 79, 52, .12);
+    }
+    .eyebrow {
+      background: var(--accent-soft);
+      color: var(--accent);
+    }
+    .chip, .meta-chip {
+      background: rgba(255, 255, 255, .6);
+      color: var(--muted);
+      font-family: var(--mono);
+      letter-spacing: 0;
+    }
+    .hero h1 {
+      margin: 12px 0 24px;
+      font-family: var(--serif);
+      font-size: clamp(32px, 4.1vw, 58px);
+      line-height: 1.02;
+      letter-spacing: -.04em;
+      max-width: none;
+    }
+    .lede {
+      margin: 0;
+      max-width: none;
+      font-size: 18px;
+      color: var(--muted);
+    }
+    .chip-row {
+      margin-top: auto;
+      padding-top: 28px;
+      align-self: flex-start;
+    }
+    .hero-panel {
+      display: grid;
+      gap: 14px;
+      align-content: start;
+      padding: 18px;
+      border-radius: var(--radius-lg);
+      background: linear-gradient(180deg, rgba(255,250,244,.92), rgba(250,243,235,.84));
+      border: 1px solid rgba(76,61,50,.1);
+    }
+    .kicker {
+      display: grid;
+      gap: 10px;
+      font-family: var(--mono);
+      font-size: 13px;
+      color: var(--muted);
+    }
+    .diagnosis {
+      display: grid;
+      gap: 10px;
+      padding-top: 12px;
+      border-top: 1px solid var(--line);
+    }
+    .diagnosis strong {
+      display: block;
+      font-size: 13px;
+      font-family: var(--mono);
+      color: var(--support);
+      letter-spacing: .02em;
+      text-transform: uppercase;
+    }
+    .diagnosis p {
+      margin: 0;
+      font-size: 18px;
+      color: var(--ink);
+    }
+    .chip-row, .evidence-row, .issue-meta {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+    }
+    .section, .priority-card {
+      border-radius: var(--radius-lg);
+      padding: 24px;
+      display: grid;
+      gap: 18px;
+    }
+    .priority-card {
+      border-radius: var(--radius-xl);
+      background: linear-gradient(145deg, rgba(255,250,244,.96), rgba(247,237,226,.92));
+      box-shadow: var(--shadow);
+    }
+    .section-header {
+      display: grid;
+      gap: 8px;
+      align-items: start;
+      padding-bottom: 14px;
+      border-bottom: 1px solid var(--line);
+    }
+    .section-header h2 {
+      margin: 0;
+      font-family: var(--serif);
+      font-size: clamp(24px, 2.6vw, 34px);
+      line-height: 1.06;
+      letter-spacing: -.03em;
+    }
+    .section-header p {
+      margin: 0;
+      max-width: 56ch;
+      color: var(--muted);
+    }
+    .panel {
+      padding: 18px;
+      border-radius: var(--radius-md);
+      background: rgba(255,255,255,.54);
+      border: 1px solid rgba(76,61,50,.1);
+    }
+    .panel h3 {
+      margin: 0 0 8px;
+      font-size: 14px;
+      line-height: 1.6;
+      font-weight: 600;
+      font-family: var(--sans);
+      letter-spacing: 0;
+      color: var(--ink);
+    }
+    .panel p, .panel ol, .panel ul {
+      margin: 0;
+      font-size: 16px;
+      line-height: 1.72;
+    }
+    .two-col, .three-col, .priority-grid, .actions-grid {
+      display: grid;
+      gap: 18px;
+    }
+    .two-col { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    .three-col { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+    .priority-grid, .actions-grid { grid-template-columns: minmax(0, 1.12fr) minmax(300px, .88fr); }
+    .issue-list, .track-list, .flow-list { display: grid; gap: 18px; }
+    .issue-card, .track-card, .flow-card {
+      border-radius: var(--radius-lg);
+      padding: 22px;
+      display: grid;
+      gap: 14px;
+    }
+    .issue-card header, .track-card header, .flow-card header {
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+      gap: 16px;
+      padding-bottom: 12px;
+      border-bottom: 1px solid var(--line);
+    }
+    .issue-card > header h3, .track-card > header h3, .flow-card > header h3 {
+      margin: 0;
+      font-size: 24px;
+      line-height: 1.18;
+      letter-spacing: -.02em;
+    }
+    .issue-meta {
+      color: var(--muted);
+      font-family: var(--mono);
+      font-size: 12px;
+    }
+    .split-list {
+      display: grid;
+      gap: 12px;
+    }
+    .timeline {
+      display: grid;
+      gap: 18px;
+    }
+    .timeline-node {
+      display: grid;
+      grid-template-columns: 180px minmax(0, 1fr);
+      gap: 18px;
+      align-items: stretch;
+    }
+    .timeline-stage {
+      display: grid;
+      grid-template-rows: auto auto 1fr;
+      gap: 10px;
+      align-items: start;
+      align-self: stretch;
+    }
+    .timeline-stage::after {
+      content: "";
+      grid-row: 3;
+      justify-self: start;
+      margin-left: 15px;
+      width: 1px;
+      height: calc(100% + 18px);
+      background: rgba(76, 61, 50, 0.14);
+    }
+    .timeline-node:last-child .timeline-stage::after {
+      display: none;
+    }
+    .timeline-dot {
+      width: 32px;
+      height: 32px;
+      border-radius: 999px;
+      display: grid;
+      place-items: center;
+      border: 1px solid rgba(162, 79, 52, 0.22);
+      background: var(--paper-strong);
+      color: var(--accent);
+      font-family: var(--mono);
+      font-size: 12px;
+      box-shadow: var(--shadow-soft);
+    }
+    .timeline-stage-text {
+      grid-row: 2;
+      display: grid;
+      gap: 4px;
+    }
+    .timeline-stage-title {
+      font-size: 15px;
+      font-weight: 600;
+      line-height: 1.5;
+      color: var(--ink);
+    }
+    .timeline-stage-summary {
+      font-size: 13px;
+      line-height: 1.6;
+      color: var(--muted);
+    }
+    .timeline-card {
+      border-radius: var(--radius-lg);
+      padding: 18px;
+      display: grid;
+      gap: 14px;
+    }
+    .timeline-summary {
+      margin: 0;
+      font-size: 16px;
+      line-height: 1.72;
+      color: var(--ink);
+    }
+    .timeline-block {
+      display: grid;
+      gap: 8px;
+    }
+    .timeline-block + .timeline-block {
+      padding-top: 14px;
+      border-top: 1px solid rgba(76, 61, 50, 0.08);
+    }
+    .timeline-block h3 {
+      margin: 0;
+      font-size: 15px;
+      line-height: 1.6;
+      font-weight: 600;
+      color: var(--ink);
+    }
+    .timeline-block p {
+      margin: 0;
+      font-size: 16px;
+      line-height: 1.72;
+    }
+    .inline-label {
+      font-weight: 600;
+      color: var(--ink);
+    }
+    .ordered-actions {
+      margin: 0;
+      padding-left: 20px;
+      display: grid;
+      gap: 10px;
+    }
+    .footer-note {
+      color: var(--muted);
+      font-size: 13px;
+      font-family: var(--mono);
+    }
+    @media (max-width: 1080px) {
+      .two-col, .three-col, .priority-grid, .actions-grid {
+        grid-template-columns: 1fr;
+      }
+      .hero {
+        grid-template-columns: minmax(0, 1fr) minmax(280px, 320px);
+      }
+    }
+    @media (max-width: 920px) {
+      .hero, .two-col, .three-col, .priority-grid, .actions-grid {
+        grid-template-columns: 1fr;
+      }
+      .timeline-node {
+        grid-template-columns: 104px minmax(0, 1fr);
+        gap: 12px;
+      }
+      .timeline-stage-text {
+        gap: 2px;
+      }
+      .timeline-stage-summary {
+        display: none;
+      }
+      .chip-row {
+        max-width: 100%;
+      }
+    }
+    @media (max-width: 720px) {
+      .page {
+        width: min(100vw - 20px, 100%);
+        margin: 12px auto 42px;
+      }
+      .hero, .section, .priority-card, .issue-card, .track-card, .flow-card, .timeline-card {
+        padding: 18px;
+      }
+      .hero h1 {
+        max-width: none;
+      }
+    }
+  </style>
+</head>
+<body data-design-buff-report="v1">
+  <main class="page">
+    <section class="hero" id="review-overview">
+      <div class="hero-main">
+        <span class="eyebrow">自查模式 · 设计评审报告</span>
+        <h1>一通百 2025 - 万豪开通/绑定流程</h1>
+        <p class="lede">这条流程最大的问题不是页面画得不够全，而是第一步就把最难判断的题目丢给了用户。用户未必知道自己到底算“还没注册万豪”还是“已经有账号但还没绑定”，却必须先选开通还是绑定；一旦选错，后面的失败页、外跳说明和客服兜底，很多都在替这次误判收拾残局。</p>
+        <div class="chip-row">
+          <span class="chip">评审标识: yitongbai-marriott-2025-open-bind-flow</span>
+          <span class="chip">日期: 2026-03-30</span>
+          <span class="chip">语言: zh-CN</span>
+          <span class="chip">模式: 自查</span>
+        </div>
+      </div>
+      <aside class="hero-panel" id="executive-summary">
+        <div class="kicker">
+          <span>评审器: Codex design-buff</span>
+          <span>Figma 文件: 4jCKowmuqmLlT3uyOlN0ZP</span>
+          <span>入口节点: 213:13397</span>
+          <span>读取状态: 成功</span>
+        </div>
+        <div class="diagnosis">
+          <strong>当前评估</strong>
+          <p>这版稿子已经能支撑设计评审，但还不适合直接按现状进入开发或上线。</p>
+          <div class="evidence-row">
+            <span class="meta-chip">先解决首步判路</span>
+            <span class="meta-chip">把协议层级拆开</span>
+            <span class="meta-chip">把失败与外跳节点说清楚</span>
+          </div>
+        </div>
+      </aside>
+    </section>
+
+    <section class="section" id="changes-since-last-review">
+      <div class="section-header">
+        <h2>本次更新</h2>
+      </div>
+      <div class="three-col">
+        <div class="panel">
+          <h3>新增问题</h3>
+          <p>没有新增问题。当前问题集与上一版保持一致。</p>
+        </div>
+        <div class="panel">
+          <h3>已解决问题</h3>
+          <p>没有已解决项。Figma 稿里还看不到设计侧已经落实的修正。</p>
+        </div>
+        <div class="panel">
+          <h3>本次变化</h3>
+          <p>这次主要刷新了标题、段落组织和中文表达，让 HTML 更适合人直接阅读；不是重新改了一套诊断结论。</p>
+        </div>
+      </div>
+    </section>
+
+    <section class="priority-card" id="highest-priority-issue">
+      <div class="section-header">
+        <h2>最高优先级问题</h2>
+      </div>
+      <div class="priority-grid">
+        <div class="split-list">
+          <div class="panel">
+            <h3>核心问题</h3>
+            <p><code>ISSUE-001</code> 指向的是这条链路最根上的结构问题：用户很可能根本不确定自己到底有没有注册过万豪，却必须先在“去开通”和“去绑定”之间做选择。对用户来说，他真正知道的是“我想拿到飞猪和万豪的互通权益”，而不是“我在万豪系统里到底算哪种状态”。现在的首屏把系统本来应该承担的判路工作交给了用户，选错以后也不会立刻纠正，而是要等到失败页才告诉他原来前面走错了。</p>
+          </div>
+          <div class="panel">
+            <h3>为何优先</h3>
+            <p>因为这是整个流程最前面的决策点。这里一旦问错，后面每一页都只能做补救，没办法真正推进转化。你现在在失败页看到的重新选择、在外跳页看到的额外说明、甚至后续可能出现的客服兜底，本质上都在替首屏没有把人送到正确路径这件事善后。所以它不是一个局部文案问题，而是整条链路的根问题。</p>
+          </div>
+        </div>
+        <div class="panel">
+          <h3>修改建议</h3>
+          <p>修这件事有三种现实路径。最好的做法，是在用户授权后由系统直接判断他该走开通还是绑定，然后只给一个明确主动作；如果技术上暂时做不到，至少也要把两个入口写成用户能理解的版本，比如把“适合谁”“选错会怎样”“会损失什么”说清楚；再退一步，也应该先问一个更接近用户已知事实的问题，比如“你是否已经有万豪卡号和密码”，而不是让他自己去猜后台状态。</p>
+          <h3 style="margin-top:16px;">需确认</h3>
+          <p>这里最关键的待确认点是：用户完成授权后，系统到底能不能直接判断他该走开通还是绑定；如果现在还做不到，就要尽快明确还有哪些更可靠的事实信号，可以替代“你自己判断自己是不是万豪会员”这道题。</p>
+          <p class="footer-note" style="margin-top:16px;">场景匹配 · 高优先级 · 高置信</p>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="background-and-evidence">
+      <div class="section-header">
+        <h2>评审依据与边界</h2>
+      </div>
+      <div class="two-col">
+        <div class="panel">
+          <h3>评审依据</h3>
+          <p>这次重点看了首屏分流、绑卡说明与实名确认、协议页、失败页、外跳说明和成功页，并用总板截图核对整体链路。能直接看到的关键文案包括“没有万豪会员卡，去开通”“已有万豪会员卡，去绑定”“该手机号已注册过万豪会员，不能重复注册”“跳转至万豪登录页”和“您已通过飞猪F4互通成为万豪尊贵白金卡会员”。这些页面足够支撑对分流逻辑、信息层级、动作命名、页面连贯性和成功后的价值承接做高置信判断。</p>
+        </div>
+        <div class="panel">
+          <h3>评审边界</h3>
+          <p>这次还判断不到万豪真实登录页的体验，也不能直接验证后台是否已经具备自动判路能力、外跳后的回跳机制，以及实名不一致时到底有哪些真实接口约束。原因很明确：真实的万豪登录页和回调流程不在当前 Figma 板里，外跳说明页仍然用了占位图，返回路径也只能从文案推断，不能从原型或真实流程里直接验证。</p>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="full-review">
+      <div class="section-header">
+        <h2>完整评审</h2>
+      </div>
+      <div class="issue-list" id="issue-list">
+        <article class="issue-card">
+          <header>
+            <h3>ISSUE-001 · 用户可能不知道自己是否注册过万豪，却必须先选开通还是绑定</h3>
+            <div class="issue-meta">场景匹配 · 高优先级 · 高置信</div>
+          </header>
+          <div class="split-list">
+            <div class="panel">
+              <h3>核心问题</h3>
+              <p>首屏给用户出的并不是一个他天然知道答案的问题。对大多数人来说，“我想拿到互通权益”是确定的，但“我到底算未注册、已注册还是该去绑定”并不一定确定。现在页面要求用户先自己判断，再决定去开通还是去绑定；一旦判断错了，系统不是立刻帮他纠正，而是要到失败页才告诉他前面走错了。整条链路因此变成了先猜一次、猜错再补救，而不是一步一步把用户送到正确结果。</p>
+            </div>
+            <div class="panel">
+              <h3>修改建议</h3>
+              <p>最好让系统在授权后直接判路；如果现在做不到，就把两个入口写成用户看得懂也敢选的版本，明确“适合谁”“选错会怎样”“会损失什么”；再不行，也至少把第一道题改成更接近用户已知事实的问题，例如先问他有没有万豪卡号和密码，而不是继续让他判断自己的账号状态。</p>
+            </div>
+            <div class="panel">
+              <h3>需确认</h3>
+              <p>关键要确认的是系统能否在授权后直接判路，以及如果不能判路，产品还能拿什么更可靠的信息来代替现在这道高门槛选择题。</p>
+            </div>
+          </div>
+        </article>
+
+        <article class="issue-card">
+          <header>
+            <h3>ISSUE-002 · 协议页把必选授权和营销偏好放在同一层</h3>
+            <div class="issue-meta">认知与操作成本 · 高优先级 · 高置信</div>
+          </header>
+          <div class="split-list">
+            <div class="panel">
+              <h3>核心问题</h3>
+              <p>协议页不是信息太多，而是把不同性质的信息放在了同一层。现在两条必须完成的法务授权和三条营销偏好被并排放进关键路径里，视觉强度和阅读负担几乎一样，用户得自己再多想一步，才能分清哪些不勾不行、哪些只是附加偏好。这不但会提高阅读疲劳，也很容易让人怀疑产品是不是在借机把营销授权夹带进主流程。</p>
+            </div>
+            <div class="panel">
+              <h3>修改建议</h3>
+              <p>必选协议应该单独收成一个清晰的强约束区域，让用户知道这是完成开通或绑定必须处理的部分；可选营销要么折叠进次级设置，要么干脆挪到成功后再轻量询问。这样既不降低法务完整性，也不会在关键路径里额外消耗用户的判断力。</p>
+            </div>
+          </div>
+        </article>
+
+        <article class="issue-card">
+          <header>
+            <h3>ISSUE-003 · 失败后要重新做决定，但主按钮还是“下一步”</h3>
+            <div class="issue-meta">基础体验 · 高优先级 · 高置信</div>
+          </header>
+          <div class="split-list">
+            <div class="panel">
+              <h3>核心问题</h3>
+              <p>用户走到失败页时，情绪和耐心都已经比前面脆弱得多，这时最需要的是确定性。但页面虽然让他在“继续绑定”和“更换手机号重新注册”之间二选一，底部主按钮却仍然只是一个很空的“下一步”。也就是说，用户在最需要被明确引导的时候，还要再猜一次自己点下去到底会发生什么。</p>
+            </div>
+            <div class="panel">
+              <h3>修改建议</h3>
+              <p>这页应该被当作重新决策页来设计，而不是普通流程页。按钮文案要直接映射当前选择的结果，例如“去绑定已有账号”或“返回更换手机号”，并在切换选项时同步变化，让用户在点击前就已经知道自己会被带到哪里。</p>
+            </div>
+            <div class="panel">
+              <h3>需确认</h3>
+              <p>需要先确认系统默认希望把用户带向哪条恢复路径，以及相比卡片切换后再点一个通用按钮，直接给两个明确动作按钮会不会更清楚。</p>
+            </div>
+          </div>
+        </article>
+
+        <article class="issue-card">
+          <header>
+            <h3>ISSUE-004 · 跳转万豪前，页面没把回流和安全说清楚</h3>
+            <div class="issue-meta">用户心智与习惯 · 高优先级 · 高置信</div>
+          </header>
+          <div class="split-list">
+            <div class="panel">
+              <h3>核心问题</h3>
+              <p>外跳说明页现在更像是在解释步骤，而不是在建立信任。页面会告诉用户要去万豪登录，也会提示绑定成功后回来刷新查看结果，但占位图还没换成真实截图，也没有把“会不会自动返回”“如果失败了怎么办”“为什么这一步是安全的”这些最关键的问题说清楚。对于本来就对跨站跳转敏感的用户来说，这样的说明不足以支撑他放心离开当前环境。</p>
+            </div>
+            <div class="panel">
+              <h3>修改建议</h3>
+              <p>这里需要补的不是更多步骤，而是更强的信任和结果预期。应该把真实截图、回流方式、安全说明和失败兜底都讲清楚，让用户在离开飞猪之前，就知道完成后会发生什么、没成功时又该怎么办。</p>
+            </div>
+            <div class="panel">
+              <h3>需确认</h3>
+              <p>要尽快确认外跳后的真实回流方式到底是自动回流、手动返回，还是刷新后才会看到结果；只有把这个机制讲清楚，页面上的承诺才不会变成空话。</p>
+            </div>
+          </div>
+        </article>
+
+        <article class="issue-card">
+          <header>
+            <h3>ISSUE-005 · 成功页宣布了结果，但没有接住下一步价值</h3>
+            <div class="issue-meta">价值承接 · 中优先级 · 高置信</div>
+          </header>
+          <div class="split-list">
+            <div class="panel">
+              <h3>核心问题</h3>
+              <p>成功页现在更像一张庆祝海报。用户确实看到了自己已经拿到什么等级的会籍，但页面没有顺势告诉他接下来最值得去哪里，也没有把新获得的价值往下接。于是本来最适合承接后续使用、放大获得感的时刻，最后只落成了一个泛化的“确认”。</p>
+            </div>
+            <div class="panel">
+              <h3>修改建议</h3>
+              <p>成功页应该从“宣布结果”升级成“交接价值”。按钮最好直接代表一个明确去向，比如去看会员权益、进入会员中心，或者去最能体现本次互通价值的下一站，而不是把用户停在一个只负责庆祝、却不负责引导的页面上。</p>
+            </div>
+          </div>
+        </article>
+
+        <article class="issue-card">
+          <header>
+            <h3>ISSUE-006 · 发现实名不一致时，页面没告诉用户下一步怎么办</h3>
+            <div class="issue-meta">基础体验 · 中优先级 · 高置信</div>
+          </header>
+          <div class="split-list">
+            <div class="panel">
+              <h3>核心问题</h3>
+              <p>实名确认页把结果展示出来了，但展示结果并不等于解决问题。对那些发现实名不一致、或者担心绑定后权益归属出错的用户来说，页面只是把风险摆在了眼前，却没有继续告诉他接下来该修改什么、不能修改什么、如果确实不一致又应该去哪里处理。</p>
+            </div>
+            <div class="panel">
+              <h3>修改建议</h3>
+              <p>这里至少要补上“不一致怎么办”的清晰路径。无论是允许就地修改、引导申诉，还是直接提供客服兜底入口，都要让用户知道下一步能怎么解决，而不是停在“问题我已经看见了，但系统没给我出路”的状态里。</p>
+            </div>
+            <div class="panel">
+              <h3>需确认</h3>
+              <p>要尽快确认实名信息能不能在流程内直接修正；如果不能，最短的人工或客服兜底路径到底是什么，页面上必须把这件事说实。</p>
+            </div>
+          </div>
+        </article>
+      </div>
+
+    </section>
+
+    <section class="section" id="three-flow-consistency">
+      <div class="section-header">
+        <h2>三流一致性</h2>
+      </div>
+      <div class="timeline">
+        <article class="timeline-node">
+          <div class="timeline-stage">
+            <div class="timeline-dot">01</div>
+            <div class="timeline-stage-text">
+              <div class="timeline-stage-title">首步分流</div>
+              <div class="timeline-stage-summary">用户一进入流程，就要先决定去开通还是去绑定。</div>
+            </div>
+          </div>
+          <div class="timeline-card">
+            <p class="timeline-summary">系统还没帮用户确认状态，第一步就先把判路题丢给了用户。</p>
+            <div class="timeline-block">
+              <h3>旅程流断裂</h3>
+              <p><span class="inline-label">问题：</span>主链路本来应该把用户稳定送到正确结果，但现在一开始就让用户自我判断账号状态。只要选错，后面就不是顺着完成互通，而是进入失败后再改路的补救链。</p>
+              <p><span class="inline-label">解法：</span>优先改成授权后自动判路；如果暂时做不到，也要先问用户答得出来的事实题，而不是继续让用户猜后台状态。</p>
+            </div>
+            <div class="timeline-block">
+              <h3>心智流掉信任</h3>
+              <p><span class="inline-label">问题：</span>用户知道自己想拿互通权益，但不一定知道自己在万豪系统里算哪种状态。第一步就被要求自诊断，会立刻产生“我是不是已经选错了”的不安。</p>
+              <p><span class="inline-label">解法：</span>把入口改成用户看得懂也敢选的版本，明确适用条件和选错后果；能让系统代判，就不要把这道题继续留给用户。</p>
+            </div>
+          </div>
+        </article>
+        <article class="timeline-node">
+          <div class="timeline-stage">
+            <div class="timeline-dot">02</div>
+            <div class="timeline-stage-text">
+              <div class="timeline-stage-title">实名确认</div>
+              <div class="timeline-stage-summary">系统展示实名信息，用户继续前会先看到身份核验结果。</div>
+            </div>
+          </div>
+          <div class="timeline-card">
+            <p class="timeline-summary">这里真正的问题不是展示了结果，而是发现异常后没有继续把人带下去。</p>
+            <div class="timeline-block">
+              <h3>操作流缺出口</h3>
+              <p><span class="inline-label">问题：</span>如果实名不一致，页面只是把风险摆出来，却没有告诉用户接下来能改什么、去哪里改，或者应该找谁处理。</p>
+              <p><span class="inline-label">解法：</span>在这个节点直接给出后续路径，例如就地修改、申诉入口或客服兜底，不要让用户停在“我知道有问题，但系统没给出路”的状态里。</p>
+            </div>
+          </div>
+        </article>
+        <article class="timeline-node">
+          <div class="timeline-stage">
+            <div class="timeline-dot">03</div>
+            <div class="timeline-stage-text">
+              <div class="timeline-stage-title">协议确认</div>
+              <div class="timeline-stage-summary">用户需要完成开通或绑定前的协议确认。</div>
+            </div>
+          </div>
+          <div class="timeline-card">
+            <p class="timeline-summary">协议页的问题不在于字多，而在于不同性质的信息被放在了同一层。</p>
+            <div class="timeline-block">
+              <h3>操作流不清</h3>
+              <p><span class="inline-label">问题：</span>必选法务授权和可选营销偏好被并排塞进关键路径，用户得自己再做一层判断，才能分清哪些必须勾、哪些只是附加选项。</p>
+              <p><span class="inline-label">解法：</span>把必选协议单独收成清晰区域，让用户一眼知道这是必须完成的部分；营销偏好则降级或后置处理。</p>
+            </div>
+            <div class="timeline-block">
+              <h3>心智流掉信任</h3>
+              <p><span class="inline-label">问题：</span>当必选协议和营销偏好看起来一样重时，用户很容易怀疑产品是不是在关键路径里夹带营销授权。</p>
+              <p><span class="inline-label">解法：</span>把法务和营销彻底分层，既保留合规完整性，也别让用户在最想尽快完成互通的时候对产品动机起疑。</p>
+            </div>
+          </div>
+        </article>
+        <article class="timeline-node">
+          <div class="timeline-stage">
+            <div class="timeline-dot">04</div>
+            <div class="timeline-stage-text">
+              <div class="timeline-stage-title">失败回退</div>
+              <div class="timeline-stage-summary">当前路径不成立时，用户会被带到失败与再选择节点。</div>
+            </div>
+          </div>
+          <div class="timeline-card">
+            <p class="timeline-summary">这个节点本来应该把用户稳稳接住，但现在更像把前面的问题集中暴露出来。</p>
+            <div class="timeline-block">
+              <h3>旅程流中途折返</h3>
+              <p><span class="inline-label">问题：</span>用户走到这里，说明主链路没有把他稳定送到结果，而是让他在半路重新做一次关键决定。</p>
+              <p><span class="inline-label">解法：</span>先把首步判路做对，再把失败页改成真正的恢复节点，让用户知道为什么回来、回来之后该去哪，而不是再走一轮猜测。</p>
+            </div>
+            <div class="timeline-block">
+              <h3>操作流不清</h3>
+              <p><span class="inline-label">问题：</span>页面虽然要求用户在两条路里重新选择，主按钮却还是一个空泛的“下一步”，用户点击前并不知道自己会被带去哪里。</p>
+              <p><span class="inline-label">解法：</span>把按钮直接改成结果型动作，例如“去绑定已有账号”或“返回更换手机号”，让动作和结果在点击前就对上。</p>
+            </div>
+          </div>
+        </article>
+        <article class="timeline-node">
+          <div class="timeline-stage">
+            <div class="timeline-dot">05</div>
+            <div class="timeline-stage-text">
+              <div class="timeline-stage-title">外跳登录与回流</div>
+              <div class="timeline-stage-summary">部分路径需要跳到万豪完成登录，再回到飞猪查看结果。</div>
+            </div>
+          </div>
+          <div class="timeline-card">
+            <p class="timeline-summary">离开飞猪这一步最需要清楚和可信，但当前说明还停留在“告诉你要跳转”。</p>
+            <div class="timeline-block">
+              <h3>旅程流断在站外</h3>
+              <p><span class="inline-label">问题：</span>用户被带出当前环境后，回流方式和结果刷新机制都没有说实，主链路因此在站外变成了一段看不清尽头的空白。</p>
+              <p><span class="inline-label">解法：</span>把“会不会自动回来、回来后哪里看结果、失败后怎么办”讲成一条完整的回流路径，让外跳仍然是主链路的一部分。</p>
+            </div>
+            <div class="timeline-block">
+              <h3>操作流不清</h3>
+              <p><span class="inline-label">问题：</span>用户看到了“跳转至万豪登录页”，但没有得到足够具体的动作预期，例如是否刷新、是否返回、是否需要手动再做一步。</p>
+              <p><span class="inline-label">解法：</span>用真实截图、明确步骤和失败兜底把动作讲完整，不要让用户每走一步都还要自己补一句“然后呢”。</p>
+            </div>
+            <div class="timeline-block">
+              <h3>心智流掉信任</h3>
+              <p><span class="inline-label">问题：</span>跨站跳转本来就容易引发警惕，而页面没有把安全性、真实性和回流承诺讲清楚，用户很难放心离开飞猪。</p>
+              <p><span class="inline-label">解法：</span>在外跳前把安全说明、真实界面和失败兜底都讲实，让用户明白这不是被丢到另一个陌生流程里。</p>
+            </div>
+          </div>
+        </article>
+        <article class="timeline-node">
+          <div class="timeline-stage">
+            <div class="timeline-dot">06</div>
+            <div class="timeline-stage-text">
+              <div class="timeline-stage-title">成功与异常承接</div>
+              <div class="timeline-stage-summary">流程最后既要接住成功结果，也要接住没完成或异常后的下一步。</div>
+            </div>
+          </div>
+          <div class="timeline-card">
+            <p class="timeline-summary">流程尾段最缺的不是“再多一个结果页”，而是把结果和后续去向真正接住。</p>
+            <div class="timeline-block">
+              <h3>旅程流没收住结果</h3>
+              <p><span class="inline-label">问题：</span>成功页宣布了会籍结果，却没有顺势把用户带去下一步最有价值的去向；异常场景则只把问题暴露出来，没有稳定收尾。</p>
+              <p><span class="inline-label">解法：</span>把成功页改成价值交接页，直接给出明确去向；异常节点则补齐解决路径，不要让任务在最后一段散掉。</p>
+            </div>
+            <div class="timeline-block">
+              <h3>心智流没接住获得感</h3>
+              <p><span class="inline-label">问题：</span>用户确实看到了结果，但没有被明确告知“我现在获得了什么、接下来最值得去哪里”，获得感和确定性都没有被放大。</p>
+              <p><span class="inline-label">解法：</span>把新获得的会籍价值和下一步动作直接接上，让用户在完成互通后立刻知道这件事对自己有什么实际意义。</p>
+            </div>
+          </div>
+        </article>
+      </div>
+      <div class="panel">
+        <h3>整体判断</h3>
+        <p>这版的问题不是分散的页面瑕疵，而是三流没有对齐。旅程流没有把人稳定送到结果，操作流没有把关键动作说成明确结果，心智流也没有随着流程推进而持续增强确定性。三层现在不是互相支撑，而是在关键节点互相放大不确定性，所以用户越靠近转化终点，反而越容易掉信任。</p>
+      </div>
+    </section>
+
+    <section class="section" id="resolution-tracks">
+      <div class="section-header">
+        <h2>结构摘要</h2>
+      </div>
+      <div class="three-col">
+        <div class="panel">
+          <h3>问题分布</h3>
+          <p>这轮最重的问题不是平均散落在六个页面上，而是集中成三组结构风险：首步判路错位、关键动作与反馈不对齐、外跳与异常节点的信任承接不足。它们共同指向的不是视觉细节，而是整条任务链的连续性。</p>
+        </div>
+        <div class="panel">
+          <h3>分三批推进</h3>
+          <p>这次不建议继续按单页逐个修，而应分三批推进。第一批先修首步判路和失败回退，把用户稳定送上正确链路；第二批拆清协议层级，减少关键路径里的额外判断；第三批补齐外跳回流、安全说明、成功承接和异常兜底，把后半程的信任和结果闭环接上。</p>
+        </div>
+        <div class="panel">
+          <h3>关键风险</h3>
+          <p>如果继续按当前结构推进，用户会在最关键的几个节点不断补猜：先猜自己该开通还是绑定，再猜失败后的按钮会把他带去哪里，最后再猜外跳后会不会顺利回来。只要这种连续补猜还存在，错选、回退和信任流失就会一起发生。</p>
+        </div>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="section-header">
+        <h2>待确认与下一步</h2>
+      </div>
+      <div class="actions-grid">
+        <div class="panel" id="open-questions">
+          <h3>待确认</h3>
+          <ol class="ordered-actions">
+            <li>授权后系统能不能直接判断用户该走开通还是绑定？</li>
+            <li>如果用户最终绑定的是已有账号，哪些权益拿不到，这件事是否必须在第一步就讲明白？</li>
+            <li>跳去万豪登录后，系统能不能自动回到飞猪并刷新结果，还是只能靠用户手动返回？</li>
+          </ol>
+        </div>
+        <div class="panel" id="next-actions">
+          <h3>下一步</h3>
+          <ol class="ordered-actions">
+            <li>先重做首屏分流，把第一步改成用户答得出来的题，而不是继续让用户猜自己的账号状态。</li>
+            <li>把协议页里的必选协议和可选营销彻底拆开，别再让用户自己做第二层判断。</li>
+            <li>把失败页和外跳页的按钮、回流预期和安全说明补齐，再去做视觉细化。</li>
+          </ol>
+        </div>
+      </div>
+      <p class="footer-note">产物路径：design-buff-reviews/yitongbai-marriott-2025-open-bind-flow/report.html · run_id: run_20260330_yitongbai_marriott_005_plain_language_html</p>
+    </section>
+  </main>
+</body>
+</html>

@@ -1,0 +1,255 @@
+{
+  "schema_version": "v1",
+  "meta": {
+    "project_name": "会员互通开通与绑定流程",
+    "review_slug": "self-check-render-sample",
+    "report_mode": "self-check",
+    "review_date": "2026-03-31",
+    "reviewer": "Codex design-buff",
+    "requested_input_node": "36:587",
+    "reviewed_node": "36:587",
+    "reviewed_node_reason": null,
+    "report_language": "zh-CN",
+    "language_source": "explicit_override",
+    "run_id": "run_fixture_render_sample_001",
+    "input_hash": "fixture-render-sample",
+    "template_version": "human-report-html-v1",
+    "renderer_version": "design-buff-renderer-v2",
+    "created_at": "2026-03-31T09:00:00Z",
+    "updated_at": "2026-03-31T09:15:00Z"
+  },
+  "intake": {
+    "source_artifacts": [
+      "figma:get_metadata",
+      "figma:get_screenshot",
+      "figma:get_design_context"
+    ],
+    "figma_intake_url": "https://www.figma.com/design/X4orovI4RaK2Kuoa5nAzpw/Untitled?node-id=36-587&m=dev",
+    "figma_file_key": "X4orovI4RaK2Kuoa5nAzpw",
+    "figma_intake_node": "36:587",
+    "figma_intake_node_type": "frame",
+    "ingest_status": "success",
+    "selected_unit_ids": [
+      "36:587",
+      "36:601",
+      "36:620",
+      "36:633"
+    ],
+    "high_precision_unit_ids": [
+      "36:587",
+      "36:620"
+    ],
+    "structural_only_unit_ids": [],
+    "deferred_unit_ids": [],
+    "tool_limits": [
+      "真实站外回流未包含在当前稿中"
+    ]
+  },
+  "coverage": {
+    "fully_read_unit_ids": [
+      "36:587",
+      "36:601",
+      "36:620"
+    ],
+    "partially_read_unit_ids": [
+      "36:633"
+    ],
+    "screenshot_validated_unit_ids": [
+      "36:587",
+      "36:601"
+    ],
+    "open_tooling_gaps": [
+      "无法验证真实回调"
+    ]
+  },
+  "background": {
+    "page_type": "会员互通流程",
+    "product_type": "旅行会员绑定",
+    "industry": "旅行",
+    "target_user": "希望快速拿到互通权益的用户",
+    "core_scenario": "判断自己该开通还是绑定并完成互通",
+    "business_goal": "提升互通成功率",
+    "workflow_position": "转化中段",
+    "summary": "会员互通开通与绑定流程",
+    "assumptions": [
+      "用户并不清楚自己在第三方系统里的账号状态"
+    ],
+    "unknowns": [
+      "真实站外登录与回流机制"
+    ],
+    "confidence": "medium-high"
+  },
+  "evidence": [
+    {
+      "evidence_id": "ev_001",
+      "source_type": "figma",
+      "node_ref": "36:587",
+      "artifact_ref": "entry-flow",
+      "read_method": "get_design_context",
+      "confidence": "high",
+      "raw_ref": ".design-buff/self-check-render-sample/context-36-587.json",
+      "tags": [
+        "routing",
+        "cta",
+        "copy"
+      ]
+    },
+    {
+      "evidence_id": "ev_002",
+      "source_type": "figma",
+      "node_ref": "36:620",
+      "artifact_ref": "agreement-step",
+      "read_method": "get_screenshot",
+      "confidence": "high",
+      "raw_ref": ".design-buff/self-check-render-sample/screenshot-36-620.png",
+      "tags": [
+        "agreement",
+        "hierarchy"
+      ]
+    }
+  ],
+  "issues": [
+    {
+      "stable_id": "routing-self-diagnosis__90f948",
+      "display_number": "ISSUE-001",
+      "title": "用户还不知道自己有没有第三方账号，却被要求先判断该开通还是绑定",
+      "category": "scenario and fit",
+      "severity": "high",
+      "confidence": "high",
+      "status": "active",
+      "evidence_ids": [
+        "ev_001"
+      ],
+      "problem_summary": "首步把判路责任丢给用户。",
+      "impact_summary": "选错后会直接进入失败补救。",
+      "recommendation_summary": "把状态判断前移，或至少把入口改成用户答得出来的问题。",
+      "discussion_prompts": [
+        "系统能否在授权后直接判路？"
+      ]
+    },
+    {
+      "stable_id": "mixed-consent-weight__7b52ce",
+      "display_number": "ISSUE-002",
+      "title": "协议页把必选法务与营销偏好放在同一层，用户很难一眼看清主任务",
+      "category": "cognitive and operational cost",
+      "severity": "high",
+      "confidence": "high",
+      "status": "active",
+      "evidence_ids": [
+        "ev_002"
+      ],
+      "problem_summary": "必选与可选信息层级混在一起。",
+      "impact_summary": "关键节点会额外制造信任摩擦。",
+      "recommendation_summary": "把必选协议单独收口，把营销偏好后置。",
+      "discussion_prompts": [
+        "营销授权能否后置到成功后？"
+      ]
+    },
+    {
+      "stable_id": "failure-action-ambiguity__2d114c",
+      "display_number": "ISSUE-003",
+      "title": "失败补救页要求重新选择路径，但主按钮仍然是空泛的下一步",
+      "category": "interaction clarity",
+      "severity": "medium",
+      "confidence": "high",
+      "status": "active",
+      "evidence_ids": [
+        "ev_001"
+      ],
+      "problem_summary": "恢复节点没有把结果型动作说清楚。",
+      "impact_summary": "用户在最脆弱的节点还要再猜一次点击结果。",
+      "recommendation_summary": "把按钮改成去绑定已有账号或返回更换手机号之类的结果型动作。",
+      "discussion_prompts": [
+        "失败默认应把用户带去哪条恢复路径？"
+      ]
+    },
+    {
+      "stable_id": "offsite-return-contract__3fd6d0",
+      "display_number": "ISSUE-004",
+      "title": "站外登录前没有把回流结果与安全感讲实，用户会在临门一脚处失去确定性",
+      "category": "trust and continuity",
+      "severity": "medium",
+      "confidence": "medium-high",
+      "status": "active",
+      "evidence_ids": [
+        "ev_001"
+      ],
+      "problem_summary": "外跳说明只告诉用户要离开，没有讲清回来后会发生什么。",
+      "impact_summary": "跨站动作会放大不确定感与流失风险。",
+      "recommendation_summary": "补齐真实预期、回流方式和失败兜底。",
+      "discussion_prompts": [
+        "外跳后是自动回流还是只能手动返回？"
+      ]
+    }
+  ],
+  "priorities": {
+    "highest_priority_issue_id": "routing-self-diagnosis__90f948",
+    "top_issue_ids": [
+      "routing-self-diagnosis__90f948",
+      "mixed-consent-weight__7b52ce",
+      "offsite-return-contract__3fd6d0"
+    ],
+    "open_questions": [
+      {
+        "question_id": "q_001",
+        "title": "系统能否在授权后直接判断用户该走开通还是绑定？",
+        "status": "open",
+        "related_issue_ids": [
+          "routing-self-diagnosis__90f948"
+        ]
+      },
+      {
+        "question_id": "q_002",
+        "title": "营销授权能否后置到主任务完成后再轻量补充？",
+        "status": "open",
+        "related_issue_ids": [
+          "mixed-consent-weight__7b52ce"
+        ]
+      },
+      {
+        "question_id": "q_003",
+        "title": "站外登录完成后能否自动返回并刷新互通结果？",
+        "status": "open",
+        "related_issue_ids": [
+          "offsite-return-contract__3fd6d0"
+        ]
+      }
+    ],
+    "next_actions": [
+      {
+        "action_id": "a_001",
+        "title": "重写首步判路，把第一道题改成用户答得出来的事实题。",
+        "status": "todo",
+        "related_issue_ids": [
+          "routing-self-diagnosis__90f948"
+        ]
+      },
+      {
+        "action_id": "a_002",
+        "title": "拆开协议页层级，把必选协议与营销偏好彻底分层。",
+        "status": "todo",
+        "related_issue_ids": [
+          "mixed-consent-weight__7b52ce"
+        ]
+      },
+      {
+        "action_id": "a_003",
+        "title": "补齐失败回退和站外回流的动作与反馈文案。",
+        "status": "todo",
+        "related_issue_ids": [
+          "failure-action-ambiguity__2d114c",
+          "offsite-return-contract__3fd6d0"
+        ]
+      }
+    ]
+  },
+  "history": {
+    "previous_run_id": null,
+    "previous_review_date": null,
+    "new_issue_ids": [],
+    "resolved_issue_ids": [],
+    "changed_issue_ids": [],
+    "severity_changed_issue_ids": [],
+    "recommendation_changed_issue_ids": []
+  }
+}

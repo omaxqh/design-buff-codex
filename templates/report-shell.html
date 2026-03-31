@@ -305,10 +305,13 @@
     .issue-meta {
       display: flex;
       flex-wrap: wrap;
+      justify-content: flex-end;
       gap: 8px;
+      margin-left: auto;
       color: var(--muted);
       font-family: var(--mono);
       font-size: 12px;
+      text-align: right;
     }
 
     .split-list {
@@ -501,11 +504,11 @@
 </head>
 <body data-design-buff-report="v1">
   <main class="page">
-    <section class="hero" id="review-overview">
+    <section class="hero" id="review-overview" data-structure="review-overview-shell">
       <div class="hero-main">
         <span class="eyebrow">{{report_mode_label}}</span>
-        <h1>{{project_name}}</h1>
-        <p class="lede">{{overall_diagnosis}}</p>
+        <h1 data-slot="project-name">{{project_name}}</h1>
+        <p class="lede" data-slot="overall-diagnosis">{{overall_diagnosis}}</p>
         <div class="chip-row">
           <span class="chip">{{review_slug_chip_label}}: {{review_slug}}</span>
           <span class="chip">{{review_date_chip_label}}: {{review_date}}</span>
@@ -513,7 +516,7 @@
           <span class="chip">{{ingest_status_chip_label}}: {{ingest_status}}</span>
         </div>
       </div>
-      <aside class="hero-panel" id="executive-summary">
+      <aside class="hero-panel" id="executive-summary" data-section-role="executive-summary-panel">
         <div class="kicker">
           <span>{{reviewer_label}}: {{reviewer}}</span>
           <span>{{figma_file_label}}: {{figma_file_key}}</span>
@@ -544,14 +547,14 @@
 
     <section class="priority-card" id="highest-priority-issue">
       <div class="section-header">
-        <h2>{{highest_priority_title}}</h2>
+        <h2>{{highest_priority_section_title}}</h2>
       </div>
       <div class="priority-grid">
         <div class="split-list">
           <div class="panel">
             <h3>{{issue_label}}</h3>
-            <p>{{highest_priority_display_number}} · {{highest_priority_title}}</p>
-            <p class="footer-note">{{highest_priority_stable_id}} · {{highest_priority_severity}} · {{highest_priority_confidence}}</p>
+            <p>{{highest_priority_display_number}} · {{highest_priority_issue_title}}</p>
+            <p class="footer-note">{{highest_priority_category}} · {{highest_priority_severity}} · {{highest_priority_confidence}}</p>
           </div>
           <div class="panel">
             <h3>{{diagnosis_label}}</h3>
@@ -585,31 +588,10 @@
       <div class="section-header">
         <h2>{{full_review_title}}</h2>
       </div>
-      <div class="issue-list" id="issue-list">
-        <article class="issue-card">
-          <header>
-            <h3>{{issue_display_number}} · {{issue_title}}</h3>
-            <div class="issue-meta">{{issue_category}} · {{issue_severity}} · {{issue_confidence}}</div>
-          </header>
-          <div class="split-list">
-            <div class="panel">
-              <h3>{{diagnosis_label}}</h3>
-              <p>{{issue_diagnosis_paragraph}}</p>
-            </div>
-            <div class="panel">
-              <h3>{{recommended_direction_label}}</h3>
-              <p>{{issue_recommended_direction_paragraph}}</p>
-            </div>
-            <div class="panel">
-              <h3>{{need_to_confirm_label}}</h3>
-              <p>{{issue_need_to_confirm}}</p>
-            </div>
-          </div>
-        </article>
-      </div>
+      <div class="issue-list" id="issue-list" data-structure="issue-card-list">{{issue_cards_html}}</div>
     </section>
 
-    <section class="section" id="three-flow-consistency">
+    <section class="section" id="three-flow-consistency" data-structure="three-flow-timeline">
       <div class="section-header">
         <h2>{{three_flow_title}}</h2>
       </div>
@@ -620,7 +602,7 @@
       </div>
     </section>
 
-    <section class="section" id="resolution-tracks">
+    <section class="section" id="resolution-tracks" data-structure="resolution-summary">
       <div class="section-header">
         <h2>{{resolution_tracks_title}}</h2>
       </div>
@@ -644,23 +626,18 @@
       <div class="section-header">
         <h2>{{actions_title}}</h2>
       </div>
-      <div class="actions-grid">
+      <div class="actions-grid" data-structure="closing-actions-grid">
         <div class="panel" id="open-questions">
           <h3>{{open_questions_title}}</h3>
-          <ol class="ordered-actions">
-            <li>{{open_question}}</li>
-          </ol>
+          <ol class="ordered-actions">{{open_questions_items_html}}</ol>
         </div>
         <div class="panel" id="next-actions">
           <h3>{{next_actions_title}}</h3>
-          <ol class="ordered-actions">
-            <li>{{next_action}}</li>
-          </ol>
+          <ol class="ordered-actions">{{next_actions_items_html}}</ol>
         </div>
       </div>
+      <p class="footer-note">{{footer_note}}</p>
     </section>
-
-    <p class="footer-note">{{footer_note}}</p>
   </main>
 </body>
 </html>

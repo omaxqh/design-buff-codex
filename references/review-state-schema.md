@@ -19,6 +19,8 @@ design-buff-reviews/<review-slug>/review-state.json
 
 它不是第二份人类报告。
 
+如果你需要给固定模板提供受限文案槽位，把它写到 hidden scratch 的 `.design-buff/<review-slug>/report-slots.json`。不要把人类报告长 prose 混进 `review-state.json`。
+
 ## v1 顶层结构
 
 ```json
@@ -52,6 +54,9 @@ design-buff-reviews/<review-slug>/review-state.json
 - `report_mode`: `string`, required, allowed `self-check | agent-review`
 - `review_date`: `string`, required, format `YYYY-MM-DD`
 - `reviewer`: `string`, required
+- `requested_input_node`: `string | null`, optional，用来记录用户原始点名的 node
+- `reviewed_node`: `string | null`, optional，用来记录实际评审的 node；如果上卷到了父级 screen 或 page，要显式写这里
+- `reviewed_node_reason`: `string | null`, optional，说明为什么实际评审节点与原始输入节点不同
 - `report_language`: `string`, required
 - `language_source`: `string`, required, allowed `explicit_override | intake_inference | default_zh_cn`
 - `run_id`: `string`, required
@@ -197,6 +202,9 @@ design-buff-reviews/<review-slug>/review-state.json
     "report_mode": "self-check",
     "review_date": "2026-03-27",
     "reviewer": "Codex design-buff",
+    "requested_input_node": "1:2",
+    "reviewed_node": "1:2",
+    "reviewed_node_reason": null,
     "report_language": "zh-CN",
     "language_source": "intake_inference",
     "run_id": "run_001",

@@ -1,0 +1,809 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="design-buff-template" content="human-report-html-v1">
+  <title>会员互通开通与绑定流程 - Design Buff Review</title>
+  <style>
+    :root {
+      color-scheme: light;
+      --bg: #efe7dc;
+      --paper: rgba(255, 251, 246, 0.92);
+      --paper-strong: #fffaf4;
+      --ink: #1f1a17;
+      --muted: #695d55;
+      --line: rgba(76, 61, 50, 0.16);
+      --accent: #a44a2f;
+      --accent-soft: rgba(164, 74, 47, 0.12);
+      --support: #275a58;
+      --support-soft: rgba(39, 90, 88, 0.12);
+      --shadow: 0 24px 72px rgba(64, 43, 28, 0.12);
+      --shadow-soft: 0 14px 36px rgba(64, 43, 28, 0.08);
+      --radius-xl: 32px;
+      --radius-lg: 22px;
+      --radius-md: 16px;
+      --content: min(1320px, calc(100vw - 28px));
+      --serif: "Iowan Old Style", "Palatino Linotype", "Book Antiqua", Georgia, serif;
+      --sans: "Avenir Next", "Segoe UI", "PingFang SC", "Hiragino Sans GB", "Noto Sans SC", sans-serif;
+      --mono: "SFMono-Regular", "IBM Plex Mono", "Menlo", monospace;
+    }
+
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+
+    body {
+      margin: 0;
+      color: var(--ink);
+      font-family: var(--sans);
+      font-size: 16px;
+      line-height: 1.6;
+      background:
+        radial-gradient(circle at top left, rgba(164, 74, 47, 0.14), transparent 24%),
+        radial-gradient(circle at 88% 12%, rgba(39, 90, 88, 0.12), transparent 18%),
+        linear-gradient(180deg, #f6f0e8 0%, var(--bg) 100%);
+    }
+
+    .page {
+      width: var(--content);
+      margin: 24px auto 64px;
+      display: grid;
+      gap: 22px;
+    }
+
+    .hero,
+    .section,
+    .issue-card,
+    .track-card,
+    .flow-card,
+    .timeline-card {
+      border: 1px solid var(--line);
+      background: var(--paper);
+      box-shadow: var(--shadow-soft);
+      backdrop-filter: blur(12px);
+    }
+
+    .hero {
+      position: relative;
+      overflow: hidden;
+      border-radius: var(--radius-xl);
+      padding: 28px;
+      display: grid;
+      gap: 24px;
+      grid-template-columns: minmax(0, 1.26fr) minmax(280px, 360px);
+      align-items: start;
+      box-shadow: var(--shadow);
+    }
+
+    .hero-main {
+      display: flex;
+      flex-direction: column;
+      align-self: stretch;
+      min-height: 100%;
+    }
+
+    .hero::after {
+      content: "";
+      position: absolute;
+      inset: auto -80px -120px auto;
+      width: 260px;
+      height: 260px;
+      background: radial-gradient(circle, rgba(164, 74, 47, 0.16), transparent 68%);
+      pointer-events: none;
+    }
+
+    .eyebrow,
+    .chip,
+    .meta-chip {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 7px 12px;
+      border-radius: 999px;
+      font-size: 12px;
+      letter-spacing: 0.04em;
+      background: var(--accent-soft);
+      color: var(--accent);
+      border: 1px solid rgba(164, 74, 47, 0.12);
+    }
+
+    .meta-chip,
+    .chip {
+      background: rgba(255, 255, 255, 0.58);
+      color: var(--muted);
+      font-family: var(--mono);
+      letter-spacing: 0;
+    }
+
+    .hero h1 {
+      margin: 12px 0 24px;
+      font-family: var(--serif);
+      font-size: clamp(32px, 4.1vw, 58px);
+      line-height: 1.02;
+      letter-spacing: -0.04em;
+      max-width: none;
+    }
+
+    .lede {
+      margin: 0;
+      max-width: none;
+      font-size: 18px;
+      color: var(--muted);
+    }
+
+    .chip-row {
+      margin-top: auto;
+      padding-top: 28px;
+      align-self: flex-start;
+    }
+
+    .hero-panel {
+      display: grid;
+      gap: 14px;
+      align-content: start;
+      padding: 18px;
+      border-radius: var(--radius-lg);
+      background: linear-gradient(180deg, rgba(255, 250, 244, 0.9), rgba(250, 243, 235, 0.82));
+      border: 1px solid rgba(76, 61, 50, 0.1);
+    }
+
+    .kicker {
+      display: grid;
+      gap: 10px;
+      font-family: var(--mono);
+      font-size: 13px;
+      color: var(--muted);
+    }
+
+    .diagnosis {
+      display: grid;
+      gap: 10px;
+      padding-top: 10px;
+      border-top: 1px solid var(--line);
+    }
+
+    .diagnosis strong {
+      display: block;
+      font-size: 13px;
+      font-family: var(--mono);
+      color: var(--support);
+      letter-spacing: 0.02em;
+      text-transform: uppercase;
+    }
+
+    .diagnosis p {
+      margin: 0;
+      font-size: 18px;
+      color: var(--ink);
+    }
+
+    .chip-row,
+    .evidence-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+    }
+
+    .section {
+      border-radius: var(--radius-lg);
+      padding: 24px;
+      display: grid;
+      gap: 18px;
+    }
+
+    .section-header {
+      display: grid;
+      gap: 8px;
+      align-items: start;
+      border-bottom: 1px solid var(--line);
+      padding-bottom: 14px;
+    }
+
+    .section-header h2,
+    .priority-card h2 {
+      margin: 0;
+      font-family: var(--serif);
+      font-size: clamp(24px, 2.6vw, 34px);
+      line-height: 1.06;
+      letter-spacing: -0.03em;
+    }
+
+    .section-header p {
+      margin: 0;
+      max-width: 56ch;
+      color: var(--muted);
+    }
+
+    .two-col,
+    .three-col {
+      display: grid;
+      gap: 18px;
+    }
+
+    .two-col { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    .three-col { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+
+    .panel {
+      padding: 16px 18px;
+      border-radius: var(--radius-md);
+      background: rgba(255, 255, 255, 0.52);
+      border: 1px solid rgba(76, 61, 50, 0.1);
+    }
+
+    .panel h3 {
+      margin: 0 0 8px;
+      font-size: 14px;
+      line-height: 1.6;
+      font-weight: 600;
+      letter-spacing: 0;
+      font-family: var(--sans);
+      color: var(--ink);
+    }
+
+    .panel p,
+    .panel ul,
+    .panel ol {
+      margin: 0;
+      font-size: 16px;
+      line-height: 1.72;
+    }
+
+    .priority-card {
+      display: grid;
+      gap: 18px;
+      padding: 24px;
+      border-radius: var(--radius-xl);
+      background:
+        linear-gradient(145deg, rgba(255, 250, 244, 0.96), rgba(247, 237, 226, 0.92)),
+        radial-gradient(circle at 88% 14%, rgba(164, 74, 47, 0.12), transparent 34%);
+      border: 1px solid rgba(76, 61, 50, 0.14);
+      box-shadow: var(--shadow);
+    }
+
+    .priority-grid,
+    .actions-grid {
+      display: grid;
+      gap: 18px;
+      grid-template-columns: minmax(0, 1.2fr) minmax(280px, 0.8fr);
+    }
+
+    .issue-list,
+    .track-list,
+    .flow-list {
+      display: grid;
+      gap: 18px;
+    }
+
+    .issue-card,
+    .track-card,
+    .flow-card {
+      border-radius: var(--radius-lg);
+      padding: 22px;
+      display: grid;
+      gap: 14px;
+    }
+
+    .issue-card header,
+    .track-card header,
+    .flow-card header {
+      display: flex;
+      justify-content: space-between;
+      gap: 16px;
+      align-items: baseline;
+      border-bottom: 1px solid var(--line);
+      padding-bottom: 12px;
+    }
+
+    .issue-card > header h3,
+    .track-card > header h3,
+    .flow-card > header h3 {
+      margin: 0;
+      font-size: 24px;
+      line-height: 1.05;
+    }
+
+    .issue-meta {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: flex-end;
+      gap: 8px;
+      margin-left: auto;
+      color: var(--muted);
+      font-family: var(--mono);
+      font-size: 12px;
+      text-align: right;
+    }
+
+    .split-list {
+      display: grid;
+      gap: 12px;
+    }
+
+    .split-list .row {
+      display: grid;
+      gap: 8px;
+      grid-template-columns: minmax(120px, 180px) minmax(0, 1fr);
+      align-items: start;
+      padding-top: 10px;
+      border-top: 1px solid rgba(76, 61, 50, 0.08);
+    }
+
+    .timeline {
+      display: grid;
+      gap: 18px;
+    }
+
+    .timeline-node {
+      display: grid;
+      grid-template-columns: 180px minmax(0, 1fr);
+      gap: 18px;
+      align-items: stretch;
+    }
+
+    .timeline-stage {
+      display: grid;
+      grid-template-rows: auto auto 1fr;
+      gap: 10px;
+      align-items: start;
+      align-self: stretch;
+    }
+
+    .timeline-stage::after {
+      content: "";
+      grid-row: 3;
+      justify-self: start;
+      margin-left: 15px;
+      width: 1px;
+      height: calc(100% + 18px);
+      background: rgba(76, 61, 50, 0.14);
+    }
+
+    .timeline-node:last-child .timeline-stage::after {
+      display: none;
+    }
+
+    .timeline-dot {
+      width: 32px;
+      height: 32px;
+      border-radius: 999px;
+      display: grid;
+      place-items: center;
+      border: 1px solid rgba(164, 74, 47, 0.22);
+      background: var(--paper-strong);
+      color: var(--accent);
+      font-family: var(--mono);
+      font-size: 12px;
+      box-shadow: var(--shadow-soft);
+    }
+
+    .timeline-stage-text {
+      grid-row: 2;
+      display: grid;
+      gap: 4px;
+    }
+
+    .timeline-stage-title {
+      font-size: 15px;
+      font-weight: 600;
+      line-height: 1.5;
+      color: var(--ink);
+    }
+
+    .timeline-stage-summary {
+      font-size: 13px;
+      line-height: 1.6;
+      color: var(--muted);
+    }
+
+    .timeline-card {
+      border-radius: var(--radius-lg);
+      padding: 18px;
+      display: grid;
+      gap: 14px;
+    }
+
+    .timeline-summary {
+      margin: 0;
+      font-size: 16px;
+      line-height: 1.72;
+      color: var(--ink);
+    }
+
+    .timeline-block {
+      display: grid;
+      gap: 8px;
+    }
+
+    .timeline-block + .timeline-block {
+      padding-top: 14px;
+      border-top: 1px solid rgba(76, 61, 50, 0.08);
+    }
+
+    .timeline-block h3 {
+      margin: 0;
+      font-size: 15px;
+      line-height: 1.6;
+      font-weight: 600;
+      color: var(--ink);
+    }
+
+    .timeline-block p {
+      margin: 0;
+      font-size: 16px;
+      line-height: 1.72;
+    }
+
+    .inline-label {
+      font-weight: 600;
+      color: var(--ink);
+    }
+
+    .label {
+      font-family: var(--mono);
+      font-size: 12px;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      color: var(--muted);
+    }
+
+    .ordered-actions {
+      margin: 0;
+      padding-left: 18px;
+      display: grid;
+      gap: 10px;
+    }
+
+    .footer-note {
+      color: var(--muted);
+      font-size: 13px;
+      font-family: var(--mono);
+    }
+
+    @media (max-width: 1080px) {
+      .priority-grid,
+      .actions-grid,
+      .two-col,
+      .three-col {
+        grid-template-columns: 1fr;
+      }
+      .hero {
+        grid-template-columns: minmax(0, 1fr) minmax(280px, 320px);
+      }
+    }
+
+    @media (max-width: 920px) {
+      .hero,
+      .priority-grid,
+      .actions-grid,
+      .two-col,
+      .three-col {
+        grid-template-columns: 1fr;
+      }
+      .timeline-node {
+        grid-template-columns: 104px minmax(0, 1fr);
+        gap: 12px;
+      }
+      .timeline-stage-text {
+        gap: 2px;
+      }
+      .timeline-stage-summary {
+        display: none;
+      }
+      .chip-row {
+        max-width: 100%;
+      }
+    }
+
+    @media (max-width: 720px) {
+      .page { width: min(100vw - 20px, 100%); margin: 12px auto 42px; }
+      .hero, .section, .issue-card, .track-card, .flow-card, .timeline-card, .priority-card { padding: 18px; }
+      .hero h1 { max-width: none; }
+      .split-list .row { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body data-design-buff-report="v1">
+  <main class="page">
+    <section class="hero" id="review-overview" data-structure="review-overview-shell">
+      <div class="hero-main">
+        <span class="eyebrow">自查模式 · 设计评审报告</span>
+        <h1 data-slot="project-name">会员互通开通与绑定流程</h1>
+        <p class="lede" data-slot="overall-diagnosis">这条互通流程最大的问题不是页面不够全，而是系统把最早那道最难判断的题仍然留给了用户自己做。</p>
+        <div class="chip-row">
+          <span class="chip">评审标识: self-check-render-sample</span>
+          <span class="chip">日期: 2026-03-31</span>
+          <span class="chip">语言: zh-CN</span>
+          <span class="chip">读取状态: 成功</span>
+        </div>
+      </div>
+      <aside class="hero-panel" id="executive-summary" data-section-role="executive-summary-panel">
+        <div class="kicker">
+          <span>评审器: Codex design-buff</span>
+          <span>Figma 文件: X4orovI4RaK2Kuoa5nAzpw</span>
+          <span>评审节点: 36:587</span>
+        </div>
+        <div class="diagnosis">
+          <strong>当前评估</strong>
+          <p>这版稿子已经能支持业务讨论，但还不适合原样进入开发，因为关键节点的判路、协议层级和回流承接都还没有锁死。</p>
+          <div class="evidence-row">
+            <span class="meta-chip">先把首步硬分流改轻</span>
+            <span class="meta-chip">把协议页层级拆开</span>
+            <span class="meta-chip">把站外回流承接讲实</span>
+          </div>
+        </div>
+      </aside>
+    </section>
+
+    <section class="section" id="changes-since-last-review">
+      <div class="section-header">
+        <h2>本次更新</h2>
+      </div>
+      <div class="three-col">
+        <div class="panel"><h3>新增问题</h3><p>这是首轮回归夹具，用来验证固定模板与内容槽位是否能稳定生成同一套报告骨架。</p></div>
+        <div class="panel"><h3>已解决问题</h3><p>暂无历史轮次。</p></div>
+        <div class="panel"><h3>本次变化</h3><p>本轮重点是验证结构锁定，而不是追踪上一轮变化。</p></div>
+      </div>
+    </section>
+
+    <section class="priority-card" id="highest-priority-issue">
+      <div class="section-header">
+        <h2>最高优先级问题</h2>
+      </div>
+      <div class="priority-grid">
+        <div class="split-list">
+          <div class="panel">
+            <h3>核心问题</h3>
+            <p>ISSUE-001 · 用户还不知道自己有没有第三方账号，却被要求先判断该开通还是绑定</p>
+            <p class="footer-note">scenario and fit · 高优先级 · 高置信</p>
+          </div>
+          <div class="panel">
+            <h3>诊断</h3>
+            <p>现在的首屏要求用户先回答“我该开通还是绑定”，但这恰好是系统最应该替用户判断的事情。只要这一步还在靠用户自诊断，后面的失败补救页就会继续替前面的错误判路收拾残局。</p>
+          </div>
+          <div class="panel">
+            <h3>为何优先</h3>
+            <p>因为它发生在整条链路最前面。只要第一步把人送错路，后面每一页都只能做补救，流程不会真正变顺。</p>
+          </div>
+        </div>
+        <div class="panel">
+          <h3>修改建议</h3>
+          <p>优先改成授权后自动判路；如果暂时做不到，也要把第一道题改成更接近用户已知事实的问题，并明确系统会在后续自动校正路径。</p>
+          <h3 style="margin-top:16px;">需确认</h3>
+          <p>需要先确认飞猪侧或互通接口侧能否在授权后拿到足够可靠的账号状态信号。</p>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="background-and-evidence">
+      <div class="section-header">
+        <h2>评审依据与边界</h2>
+      </div>
+      <div class="two-col">
+        <div class="panel"><h3>评审依据</h3><p>这次重点读了首步分流、协议确认、失败补救与站外登录说明等关键节点，并回看了总板截图来核对整条链路。可见证据足够支撑对判路、层级、动作命名和回流承接做高置信判断。</p></div>
+        <div class="panel"><h3>评审边界</h3><p>当前稿里仍然看不到真实站外登录页、真实回流状态和接口约束，所以关于站外回流的建议仍然带有一层中高置信而非满置信的假设。</p></div>
+      </div>
+    </section>
+
+    <section class="section" id="full-review">
+      <div class="section-header">
+        <h2>完整评审</h2>
+      </div>
+      <div class="issue-list" id="issue-list" data-structure="issue-card-list"><article class="issue-card">
+  <header>
+    <h3>ISSUE-001 · 用户还不知道自己有没有第三方账号，却被要求先判断该开通还是绑定</h3>
+    <div class="issue-meta">scenario and fit · 高优先级 · 高置信</div>
+  </header>
+  <div class="split-list">
+    <div class="panel">
+      <h3>诊断</h3>
+      <p>首步把系统该做的状态判断丢给了用户，所以流程从第一步开始就在制造返工风险。</p>
+    </div>
+    <div class="panel">
+      <h3>修改建议</h3>
+      <p>把状态识别前移，或把入口改成更靠近用户已知事实的低风险问题。</p>
+    </div>
+    <div class="panel">
+      <h3>需确认</h3>
+      <p>系统是否已有足够信号做自动判路？</p>
+    </div>
+  </div>
+</article>
+<article class="issue-card">
+  <header>
+    <h3>ISSUE-002 · 协议页把必选法务与营销偏好放在同一层，用户很难一眼看清主任务</h3>
+    <div class="issue-meta">cognitive and operational cost · 高优先级 · 高置信</div>
+  </header>
+  <div class="split-list">
+    <div class="panel">
+      <h3>诊断</h3>
+      <p>协议页把不同性质的信息放在同一层，用户很难一眼看清什么是主任务、什么只是附加偏好。</p>
+    </div>
+    <div class="panel">
+      <h3>修改建议</h3>
+      <p>必选协议收成强约束区域，可选营销后置或降级，别再让用户自己做第二层判断。</p>
+    </div>
+    <div class="panel">
+      <h3>需确认</h3>
+      <p>营销偏好是否必须与法务授权同屏出现？</p>
+    </div>
+  </div>
+</article>
+<article class="issue-card">
+  <header>
+    <h3>ISSUE-003 · 失败补救页要求重新选择路径，但主按钮仍然是空泛的下一步</h3>
+    <div class="issue-meta">interaction clarity · 中优先级 · 高置信</div>
+  </header>
+  <div class="split-list">
+    <div class="panel">
+      <h3>诊断</h3>
+      <p>失败补救页要求用户重新做一次关键决定，但主按钮仍然没有把点击结果说实。</p>
+    </div>
+    <div class="panel">
+      <h3>修改建议</h3>
+      <p>把按钮改成结果型动作，让用户在点击前就知道自己会被带到哪里。</p>
+    </div>
+    <div class="panel">
+      <h3>需确认</h3>
+      <p>失败页默认更应该鼓励绑定恢复还是更换手机号重新走？</p>
+    </div>
+  </div>
+</article>
+<article class="issue-card">
+  <header>
+    <h3>ISSUE-004 · 站外登录前没有把回流结果与安全感讲实，用户会在临门一脚处失去确定性</h3>
+    <div class="issue-meta">trust and continuity · 中优先级 · 中高置信</div>
+  </header>
+  <div class="split-list">
+    <div class="panel">
+      <h3>诊断</h3>
+      <p>站外登录页前的说明只告诉用户要跳出去，却没有把回来后的结果与安全感接住。</p>
+    </div>
+    <div class="panel">
+      <h3>修改建议</h3>
+      <p>补真实界面预期、回流方式和失败兜底，让外跳仍然是主链路的一部分。</p>
+    </div>
+    <div class="panel">
+      <h3>需确认</h3>
+      <p>真实回流是自动、手动还是刷新可见？</p>
+    </div>
+  </div>
+</article></div>
+    </section>
+
+    <section class="section" id="three-flow-consistency" data-structure="three-flow-timeline">
+      <div class="section-header">
+        <h2>三流一致性</h2>
+      </div>
+      <div class="timeline"><article class="timeline-node">
+  <div class="timeline-stage">
+    <div class="timeline-dot">01</div>
+    <div class="timeline-stage-text">
+      <div class="timeline-stage-title">首步分流</div>
+              <div class="timeline-stage-summary">用户一进入流程，就要先决定开通还是绑定。</div>
+    </div>
+  </div>
+  <div class="timeline-card">
+    <p class="timeline-summary">系统还没帮用户确认状态，第一步就先把判路题丢给了用户。</p>
+    <div class="timeline-block">
+      <h3>旅程流断裂</h3>
+      <p><span class="inline-label">问题：</span> 主链路本该把用户稳定送到正确结果，但现在一开始就允许用户先走错，再在后面补救。</p>
+      <p><span class="inline-label">解法：</span> 优先改成授权后自动判路；至少也要把入口改成用户能答出来的事实题。</p>
+    </div>
+    <div class="timeline-block">
+      <h3>心智流掉信任</h3>
+      <p><span class="inline-label">问题：</span> 用户知道自己想拿互通权益，却不一定知道自己在第三方系统里算什么状态，所以第一步就会产生“我是不是已经选错了”的不安。</p>
+      <p><span class="inline-label">解法：</span> 把入口写成用户看得懂也敢选的版本，并明确系统稍后会自动校正分支。</p>
+    </div>
+  </div>
+</article>
+<article class="timeline-node">
+  <div class="timeline-stage">
+    <div class="timeline-dot">02</div>
+    <div class="timeline-stage-text">
+      <div class="timeline-stage-title">协议确认</div>
+              <div class="timeline-stage-summary">用户需要在关键路径里同时面对法务确认和营销偏好。</div>
+    </div>
+  </div>
+  <div class="timeline-card">
+    <p class="timeline-summary">协议页真正的问题不在于字多，而在于不同性质的信息被挤在了同一层。</p>
+    <div class="timeline-block">
+      <h3>操作流不清</h3>
+      <p><span class="inline-label">问题：</span> 用户得自己再做一层判断，才能看懂哪些必须勾、哪些只是附加偏好。</p>
+      <p><span class="inline-label">解法：</span> 把必选协议收成清晰区域，把营销偏好后置或降级。</p>
+    </div>
+    <div class="timeline-block">
+      <h3>心智流掉信任</h3>
+      <p><span class="inline-label">问题：</span> 当法务与营销看起来一样重时，用户会怀疑主流程是不是顺手夹带了额外索权。</p>
+      <p><span class="inline-label">解法：</span> 彻底拆开主任务与附加偏好，让关键节点只处理关键决策。</p>
+    </div>
+  </div>
+</article>
+<article class="timeline-node">
+  <div class="timeline-stage">
+    <div class="timeline-dot">03</div>
+    <div class="timeline-stage-text">
+      <div class="timeline-stage-title">失败补救</div>
+              <div class="timeline-stage-summary">当前路径不成立时，用户会被带到失败与再选择节点。</div>
+    </div>
+  </div>
+  <div class="timeline-card">
+    <p class="timeline-summary">恢复页本该把用户稳稳接住，但现在仍然要求用户再猜一次按钮结果。</p>
+    <div class="timeline-block">
+      <h3>旅程流中途折返</h3>
+      <p><span class="inline-label">问题：</span> 用户走到这里，说明前面的判路没有真正吸收不确定性，而是把错误集中暴露到后段。</p>
+      <p><span class="inline-label">解法：</span> 先把首步判路做对，再把失败页改成真正的恢复节点。</p>
+    </div>
+    <div class="timeline-block">
+      <h3>操作流不清</h3>
+      <p><span class="inline-label">问题：</span> 页面虽然要求重新选路，但主按钮仍然只是空泛的下一步，点击前没有结果预期。</p>
+      <p><span class="inline-label">解法：</span> 把按钮直接写成去绑定已有账号或返回更换手机号之类的结果型动作。</p>
+    </div>
+  </div>
+</article>
+<article class="timeline-node">
+  <div class="timeline-stage">
+    <div class="timeline-dot">04</div>
+    <div class="timeline-stage-text">
+      <div class="timeline-stage-title">站外登录与回流</div>
+              <div class="timeline-stage-summary">部分路径需要跳到第三方完成登录，再回到当前产品查看结果。</div>
+    </div>
+  </div>
+  <div class="timeline-card">
+    <p class="timeline-summary">离开当前环境这一步最需要清楚和可信，但现在的说明还停留在“告诉你要跳转”。</p>
+    <div class="timeline-block">
+      <h3>旅程流断在站外</h3>
+      <p><span class="inline-label">问题：</span> 用户被带出当前环境后，看不见回流方式与结果刷新机制，主链路因此在站外变成了一段空白。</p>
+      <p><span class="inline-label">解法：</span> 把会不会自动回来、回来后哪里看结果、失败后怎么办讲成一条完整回流路径。</p>
+    </div>
+    <div class="timeline-block">
+      <h3>心智流掉信任</h3>
+      <p><span class="inline-label">问题：</span> 跨站跳转本来就容易引发警惕，而页面没有把安全性、真实性和回流承诺讲清楚。</p>
+      <p><span class="inline-label">解法：</span> 在离开前把安全说明、真实界面预期和失败兜底讲实，让用户知道自己不会被丢进一个陌生流程。</p>
+    </div>
+  </div>
+</article></div>
+      <div class="panel">
+        <h3>整体判断</h3>
+        <p>当前最大的结构问题不是某一页画得差，而是三条流没有对齐。旅程流没有把人稳定送到正确结果，操作流没有把关键动作说成明确结果，心智流也没有随着流程推进持续增强确定性。</p>
+      </div>
+    </section>
+
+    <section class="section" id="resolution-tracks" data-structure="resolution-summary">
+      <div class="section-header">
+        <h2>结构摘要</h2>
+      </div>
+      <div class="three-col">
+        <div class="panel">
+          <h3>问题分布</h3>
+          <p>这轮最重的问题不是平均散落在每个页面上，而是集中成三组结构风险：首步判路错位、关键节点层级混乱、站外回流承接不足。</p>
+        </div>
+        <div class="panel">
+          <h3>分三批推进</h3>
+          <p>建议分三批推进。第一批先修首步判路与失败恢复；第二批拆开协议层级；第三批补齐站外回流与安全承接。</p>
+        </div>
+        <div class="panel">
+          <h3>关键风险</h3>
+          <p>如果继续按当前结构推进，用户会在最关键的几个节点连续补猜：先猜自己该走哪条路，再猜失败后的按钮会把自己带去哪里，最后再猜站外登录后能不能顺利回来。</p>
+        </div>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="section-header">
+        <h2>待确认与下一步</h2>
+      </div>
+      <div class="actions-grid" data-structure="closing-actions-grid">
+        <div class="panel" id="open-questions">
+          <h3>待确认</h3>
+          <ol class="ordered-actions"><li>系统能否在授权后直接判断用户该走开通还是绑定？</li><li>营销授权能否后置到主任务完成后再补充？</li><li>站外登录完成后能否自动返回并刷新结果？</li></ol>
+        </div>
+        <div class="panel" id="next-actions">
+          <h3>下一步</h3>
+          <ol class="ordered-actions"><li>先重做首步分流，把第一道题改成用户答得出来的事实题。</li><li>把协议页里的必选协议与营销偏好彻底拆开。</li><li>补齐失败恢复与站外回流的结果型动作和反馈说明。</li></ol>
+        </div>
+      </div>
+      <p class="footer-note">产物路径：design-buff-reviews/self-check-render-sample/report.html · run_id: run_fixture_render_sample_001 · 评审节点: 36:587</p>
+    </section>
+  </main>
+</body>
+</html>

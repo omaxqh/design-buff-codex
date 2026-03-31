@@ -1,7 +1,7 @@
 interface:
   display_name: "Design Buff"
   short_description: "用业务与体验视角做完整设计审核"
-  default_prompt: "使用 $design-buff 审核这份设计，从产品和体验角度还原场景与目标；默认用 self-check，只有用户明确要机器友好 handoff 时才切到 agent-review；有 Figma 证据时优先走高精度读取；按同一个 canonical review object 同步产出 report.html 和 review-state.json；渲染前读取 templates/report-shell.html，遵守 report-contract 里的语言与章节规则，落盘后运行 validate_review_contract.py 并修到通过；对话里先给出精炼启动总结。"
+  default_prompt: "使用 $design-buff 审核这份设计，从产品和体验角度还原场景与目标；默认用 self-check，只有用户明确要机器友好 handoff 时才切到 agent-review；有 Figma 证据时优先走高精度读取；按同一个 canonical review object 同步产出 review-state.json 与受限的 report-slots.json；正式 report.html 必须通过 scripts/render_report.py 基于 templates/report-shell.html 渲染，禁止自创新的 HTML shell、class 或章节组合；遵守 report-contract 里的语言、槽位与 DOM 规则，落盘后运行 validate_review_contract.py 并修到通过；对话里先给出精炼启动总结。"
 
 dependencies:
   tools:

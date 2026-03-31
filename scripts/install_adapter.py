@@ -111,9 +111,9 @@ def render_codex_runtime_readme() -> str:
 
 - 人看的报告：`design-buff-reviews/<review-slug>/report.html`
 - 机器状态：`design-buff-reviews/<review-slug>/review-state.json`
-- 临时技术状态：`.design-buff/<review-slug>/`
+- 临时技术状态：`.design-buff/<review-slug>/`，其中可以包含受限渲染槽位 `report-slots.json`
 
-`report.html` 是正式的人类评审报告；`review-state.json` 只用于结构化追踪、复跑和对比，不是第二份报告。
+`report.html` 是正式的人类评审报告；`review-state.json` 只用于结构化追踪、复跑和对比，不是第二份报告。正式 HTML 应通过固定模板和 `render_report.py` 渲染，不要自由手写另一套 shell。
 """
 
 

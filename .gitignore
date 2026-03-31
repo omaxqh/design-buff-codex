@@ -4,3 +4,7 @@ __pycache__/
 .pytest_cache/
 .design-buff/
 design-buff-reviews/
+!tests/fixtures/**/.design-buff/
+!tests/fixtures/**/.design-buff/**
+!tests/fixtures/**/design-buff-reviews/
+!tests/fixtures/**/design-buff-reviews/**

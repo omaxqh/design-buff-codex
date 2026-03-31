@@ -29,6 +29,7 @@ design-buff-reviews/<review-slug>/
 - `review-state.json` 不是第二份报告
 - 对话可以概括、重排，但不能和报告矛盾
 - 同一份草稿或功能再次复审时，要在同一个 `review-slug` 下原地更新
+- 如果需要渲染受限文案槽位，允许把 `.design-buff/<review-slug>/report-slots.json` 当作技术性 hidden scratch；它只能保存内容槽位，不能变成另一套 HTML 壳
 
 ## 对话启动总结
 
@@ -79,8 +80,10 @@ design-buff-reviews/<review-slug>/
 至少确认这些点：
 
 - `report.html` 和 `review-state.json` 都在同一个 `design-buff-reviews/<review-slug>/` 下
+- 正式 `report.html` 通过 `scripts/render_report.py` 从固定模板生成，而不是手写另一套 shell
 - 所有必备章节 id 都存在
-- `Highest-Priority Issue` 和 `Full Review` 都把 `stable_id` 渲染进了面向人的报告
+- 标题槽位、三流时间轴、结构摘要和收尾组合都符合固定 DOM 骨架
+- 面向人的 HTML 不暴露 `stable_id`，机器身份只留在 sidecar
 - `report_language` 是 `zh-CN` 时，界面标签没有混入英文脚手架
 - 如果运行时允许，执行 `scripts/validate_review_contract.py <project-root>`，没过就继续修
 
@@ -109,6 +112,8 @@ design-buff-reviews/<review-slug>/
 
 渲染：
 
+- `#review-overview h1` 只能渲染 `project_name`
+- 总诊断只能放在 `.lede`
 - `project_name`
 - `review_slug`
 - `report_mode`
@@ -122,6 +127,12 @@ design-buff-reviews/<review-slug>/
 - `figma_intake_node_type`
 - `ingest_status`
 
+结构约束：
+
+- `#executive-summary` 必须作为 `#review-overview` 内的 `aside.hero-panel` 渲染
+- 不允许把 verdict、总诊断或执行摘要挪到 `h1`
+- 不允许把 hero 改写成 `hero-side`、`summary-card` 或其他替代骨架
+
 ### Executive Summary
 
 渲染：
@@ -131,6 +142,11 @@ design-buff-reviews/<review-slug>/
 - 立即需要动手的修正重点
 - 阻碍继续推进的问题
 - 需要 PM、研究或业务补充判断的问题
+
+结构约束：
+
+- 执行摘要只允许占用 hero 侧栏，不得拆成另一个并列 hero 或另起新的 shell
+- 这里的文案可以润色，但不能改标题层级、section 组合或 class 命名
 
 ### Changes Since Last Review
 
@@ -149,8 +165,8 @@ design-buff-reviews/<review-slug>/
 渲染：
 
 - `display_number`
-- `stable_id`
 - `title`
+- `category`
 - `severity`
 - `confidence`
 - 一个说人话的诊断段落
@@ -183,7 +199,6 @@ design-buff-reviews/<review-slug>/
 每张 issue card 至少包含：
 
 - `display_number`
-- `stable_id`
 - `title`
 - `category`
 - `severity`
@@ -191,6 +206,11 @@ design-buff-reviews/<review-slug>/
 - 一个诊断段落，把可见事实、问题本质和后果合在一起
 - 一个修正段落，说明应该怎么改、为什么这么改
 - 只有在未解约束会实质影响建议时，才补一个短的 `需要确认` 段落
+
+结构约束：
+
+- `#issue-list` 必须作为 `#full-review` 内部的列表容器渲染
+- 不允许把 `#issue-list` 提升成和 `#full-review` 平级的独立 section
 
 ### Three-Flow Consistency
 
@@ -210,6 +230,18 @@ design-buff-reviews/<review-slug>/
 - 当有助于定位时，再加可选的阶段摘要
 - 卡片里最多三类问题块：`旅程流`、`操作流`、`心智流`
 - 最后补一段短综合判断，说明三条流是在互相支撑，还是彼此打架
+
+固定 DOM 语法：
+
+- `#three-flow-consistency` 下必须有 `.timeline`
+- `.timeline` 下必须有 4 到 8 个 `.timeline-node`
+- 每个 `.timeline-node` 必须同时包含 `.timeline-stage` 和 `.timeline-card`
+- `.timeline-stage` 内必须有 `.timeline-dot` 和 `.timeline-stage-title`
+- 可选的阶段摘要只能使用 `.timeline-stage-summary`
+- `.timeline-card` 内必须先有 `.timeline-summary`
+- 每个问题块只能使用 `.timeline-block`
+- 每个 `.timeline-block` 内必须同时出现 `问题：` 与 `解法：` 标签
+- 不允许把整段三流改写成 stacked `.timeline-card` 列表、路径卡片或任意新的 class 体系
 
 每个节点都应：
 
@@ -240,6 +272,12 @@ design-buff-reviews/<review-slug>/
 
 它应明显短于 issue cards 和三流一致性模块。
 
+固定 DOM 语法：
+
+- `#resolution-tracks` 下必须是 `.three-col`
+- `.three-col` 下必须恰好有 3 个 `.panel`
+- 不允许出现 `.tracks`、`.track-card` 或“路径一 / 路径二 / 路径三”式替代骨架
+
 ### Open Questions
 
 把待确认问题按优先级清楚列出来。
@@ -251,6 +289,54 @@ design-buff-reviews/<review-slug>/
 - 设计师现在就能改什么
 - 哪些点要和 PM 或业务对齐
 - 实施前还要从 Figma 回读什么
+
+组合约束：
+
+- `#open-questions` 和 `#next-actions` 必须同属一个收尾 section
+- 两者必须作为 `.actions-grid` 下的 sibling `.panel`
+- 不允许拆成两个完整 section，或改写成 `question-card` / `action-card` 网格
+
+## Render Slots
+
+正式报告不再允许模型自由写最终 HTML。模型只允许生成受限内容槽位，再由固定模板渲染。
+
+推荐把这些槽位保存到：
+
+```text
+.design-buff/<review-slug>/report-slots.json
+```
+
+允许的槽位结构：
+
+- `overview.overall_diagnosis`
+- `overview.current_verdict`
+- `overview.top_priority_chips[]`
+- `changes.new_issues`
+- `changes.resolved_issues`
+- `changes.changed_issues`
+- `highest_priority_issue.diagnosis_paragraph`
+- `highest_priority_issue.why_first_paragraph`
+- `highest_priority_issue.recommended_direction_paragraph`
+- `highest_priority_issue.need_to_confirm`
+- `background_and_evidence.review_basis`
+- `background_and_evidence.review_boundaries`
+- `issues[]`
+- `three_flow.nodes[]`
+- `three_flow.synthesis_paragraph`
+- `resolution_tracks.issue_distribution_paragraph`
+- `resolution_tracks.resolution_paths_paragraph`
+- `resolution_tracks.key_risk_paragraph`
+- `open_questions[]`
+- `next_actions[]`
+- `footer_note`
+
+明确禁止：
+
+- 新的 section
+- 新的 class 名
+- 新的 CSS shell
+- 任意替换 hero、三流时间轴、结构摘要、收尾组合的骨架
+- 把 `report-slots.json` 写成另一份 HTML 报告或自由散文
 
 ## 视觉系统
 
@@ -301,7 +387,7 @@ design-buff-reviews/<review-slug>/
 
 - 标题和段落先按人话写
 - 优先用一到两个强段落，而不是六个小标签
-- 机器身份藏在 `stable_id`，不要写进拗口标题
+- 机器身份保留在 sidecar 的 `stable_id`，不要写进人类 HTML
 - `report_language` 是 `zh-CN` 时，中文必须像中文团队真实会写的东西
 - 标题、子标题和界面标签都要翻成目标报告语言
 
@@ -329,6 +415,7 @@ hidden scratch 放在 `.design-buff/<review-slug>/` 下。
 - JSON 状态
 - 原始工具缓存
 - 运行元数据
+- `report-slots.json`
 
 不允许写入：
 
@@ -344,3 +431,9 @@ hidden scratch 放在 `.design-buff/<review-slug>/` 下。
 结构和样式以 `templates/report-shell.html` 为固定 shell 基准，不是可随意改写的灵感来源。
 视觉语境以 `references/report-style-context.md` 为基准。
 最终结果必须看起来仍然来自同一套设计系统。
+
+额外纪律：
+
+- 只允许替换模板里的受限槽位，不允许改写模板结构
+- 不允许把 `templates/report-shell.html` 当作“参考风格”后另写一版
+- 正式报告如果出现模板外的新 class，视为结构漂移

@@ -1,0 +1,408 @@
+{
+  "schema_version": "v1",
+  "meta": {
+    "project_name": "一通百 2025 - 万豪开通/绑定流程",
+    "review_slug": "yitongbai-marriott-2025-open-bind-flow",
+    "report_mode": "self-check",
+    "review_date": "2026-03-30",
+    "reviewer": "Codex design-buff",
+    "report_language": "zh-CN",
+    "language_source": "intake_inference",
+    "run_id": "run_20260330_yitongbai_marriott_005_plain_language_html",
+    "input_hash": null,
+    "template_version": "human-report-html-v1",
+    "renderer_version": "design-buff-v0.7",
+    "created_at": "2026-03-30T04:43:23Z",
+    "updated_at": "2026-03-30T06:41:31Z"
+  },
+  "intake": {
+    "source_artifacts": [
+      "figma:get_metadata",
+      "figma:get_screenshot",
+      "figma:get_design_context"
+    ],
+    "figma_intake_url": "https://www.figma.com/design/4jCKowmuqmLlT3uyOlN0ZP/%E3%80%90%E6%95%B4%E7%90%86-demo%E3%80%91%E4%B8%80%E9%80%9A%E7%99%BE2025?node-id=213-13397&t=Vvwa6ssgvYUTpa7o-4",
+    "figma_file_key": "4jCKowmuqmLlT3uyOlN0ZP",
+    "figma_intake_node": "213:13397",
+    "figma_intake_node_type": "frame",
+    "ingest_status": "success",
+    "selected_unit_ids": [
+      "213:13397",
+      "259:768",
+      "261:1787",
+      "261:2121",
+      "261:1906",
+      "261:2137",
+      "602:13459"
+    ],
+    "high_precision_unit_ids": [
+      "259:768",
+      "261:1787",
+      "261:2121",
+      "261:1906",
+      "261:2137",
+      "602:13459"
+    ],
+    "structural_only_unit_ids": [
+      "213:13397"
+    ],
+    "deferred_unit_ids": [
+      "259:775",
+      "259:818",
+      "388:2967",
+      "259:837",
+      "259:890",
+      "259:908"
+    ],
+    "tool_limits": [
+      "get_design_context on 213:13397 returned sparse metadata because the board is too large",
+      "real Marriott login page and callback flow are outside the visible Figma scope",
+      "261:2137 uses placeholder explanation images instead of final screenshots"
+    ]
+  },
+  "coverage": {
+    "fully_read_unit_ids": [
+      "259:768",
+      "261:1787",
+      "261:2121",
+      "261:1906",
+      "261:2137",
+      "602:13459"
+    ],
+    "partially_read_unit_ids": [
+      "213:13397"
+    ],
+    "screenshot_validated_unit_ids": [
+      "213:13397",
+      "259:768",
+      "261:2137",
+      "602:13459"
+    ],
+    "open_tooling_gaps": [
+      "No prototype transition data or backend state machine is visible",
+      "No live read of the external Marriott login target is available from this intake",
+      "Return path after external jump cannot be validated from current design evidence"
+    ]
+  },
+  "background": {
+    "page_type": "mobile bottom-sheet membership flow",
+    "product_type": "membership opening and account binding flow",
+    "industry": "travel loyalty",
+    "target_user": "飞猪内对万豪互通权益有明确意愿，但未必知道自己在万豪系统中所处状态的用户",
+    "core_scenario": "用户在飞猪内选择开通或绑定万豪会员，确认实名与协议，必要时外跳登录，最终查看互通成功结果",
+    "business_goal": "提高万豪开通/绑定成功率，减少错误分流与失败重试",
+    "workflow_position": "late-stage conversion flow",
+    "summary": "飞猪侧发起的万豪开通与绑定底部浮层流程",
+    "assumptions": [
+      "这张总板反映的是计划上线结构，而不是仅供讨论的探索稿",
+      "用户进入该流程时已经具备较高的转化意愿，但不一定清楚自己是否已注册万豪会员"
+    ],
+    "unknowns": [
+      "系统能否在授权后自动探测用户应走开通还是绑定",
+      "外跳登录后是否能自动回流并刷新会员状态",
+      "实名信息不一致时的真实处理机制是什么"
+    ],
+    "confidence": "high"
+  },
+  "evidence": [
+    {
+      "evidence_id": "ev_root_metadata",
+      "source_type": "figma",
+      "node_ref": "213:13397",
+      "artifact_ref": "root board metadata",
+      "read_method": "get_metadata",
+      "confidence": "high",
+      "raw_ref": "figma:get_metadata(213:13397)",
+      "tags": [
+        "structure",
+        "flow-map"
+      ]
+    },
+    {
+      "evidence_id": "ev_root_screenshot",
+      "source_type": "figma",
+      "node_ref": "213:13397",
+      "artifact_ref": "root board screenshot",
+      "read_method": "get_screenshot",
+      "confidence": "high",
+      "raw_ref": "figma:get_screenshot(213:13397)",
+      "tags": [
+        "layout",
+        "coverage"
+      ]
+    },
+    {
+      "evidence_id": "ev_route_entry",
+      "source_type": "figma",
+      "node_ref": "259:768",
+      "artifact_ref": "route selection modal",
+      "read_method": "get_design_context",
+      "confidence": "high",
+      "raw_ref": "figma:get_design_context(259:768)",
+      "tags": [
+        "entry",
+        "routing",
+        "cta"
+      ]
+    },
+    {
+      "evidence_id": "ev_bind_identity",
+      "source_type": "figma",
+      "node_ref": "261:1787",
+      "artifact_ref": "bind explanation and real-name confirmation",
+      "read_method": "get_design_context",
+      "confidence": "high",
+      "raw_ref": "figma:get_design_context(261:1787)",
+      "tags": [
+        "binding",
+        "identity",
+        "copy"
+      ]
+    },
+    {
+      "evidence_id": "ev_agreement",
+      "source_type": "figma",
+      "node_ref": "261:2121",
+      "artifact_ref": "agreement step",
+      "read_method": "get_design_context",
+      "confidence": "high",
+      "raw_ref": "figma:get_design_context(261:2121)",
+      "tags": [
+        "agreement",
+        "consent",
+        "information-density"
+      ]
+    },
+    {
+      "evidence_id": "ev_failure_recovery",
+      "source_type": "figma",
+      "node_ref": "261:1906",
+      "artifact_ref": "failure and recovery choice",
+      "read_method": "get_design_context",
+      "confidence": "high",
+      "raw_ref": "figma:get_design_context(261:1906)",
+      "tags": [
+        "failure",
+        "recovery",
+        "cta"
+      ]
+    },
+    {
+      "evidence_id": "ev_external_jump",
+      "source_type": "figma",
+      "node_ref": "261:2137",
+      "artifact_ref": "external jump explanation",
+      "read_method": "get_design_context",
+      "confidence": "high",
+      "raw_ref": "figma:get_design_context(261:2137)",
+      "tags": [
+        "external-jump",
+        "trust",
+        "return-path"
+      ]
+    },
+    {
+      "evidence_id": "ev_success_state",
+      "source_type": "figma",
+      "node_ref": "602:13459",
+      "artifact_ref": "success modal",
+      "read_method": "get_design_context",
+      "confidence": "high",
+      "raw_ref": "figma:get_design_context(602:13459)",
+      "tags": [
+        "success",
+        "follow-through",
+        "membership-card"
+      ]
+    }
+  ],
+  "issues": [
+    {
+      "stable_id": "routing-self-diagnosis__90f948",
+      "display_number": "ISSUE-001",
+      "title": "用户可能不知道自己是否注册过万豪，却必须先选开通还是绑定",
+      "category": "scenario and fit",
+      "severity": "high",
+      "confidence": "high",
+      "status": "active",
+      "evidence_ids": [
+        "ev_route_entry",
+        "ev_failure_recovery",
+        "ev_root_screenshot"
+      ],
+      "problem_summary": "首屏分流要求用户先判断自己是否已有万豪会员，错选结果在失败页才暴露。",
+      "impact_summary": "系统应承担的判路成本被转嫁给用户，导致错选、回退与重试。",
+      "recommendation_summary": "改为系统辅助判路，或至少把双分流改成带适用条件与损失说明的对比卡片。",
+      "discussion_prompts": [
+        "授权后系统能不能直接判断用户该走开通还是绑定？",
+        "如果做不到，还有什么比“是否已有万豪会员卡”更可靠、也更接近用户已知事实的提问？"
+      ]
+    },
+    {
+      "stable_id": "agreement-density__447d2a",
+      "display_number": "ISSUE-002",
+      "title": "协议页把必选授权和营销偏好混在一起，用户很难一眼分清",
+      "category": "cognitive and operational cost",
+      "severity": "high",
+      "confidence": "high",
+      "status": "active",
+      "evidence_ids": [
+        "ev_agreement"
+      ],
+      "problem_summary": "必选法务与可选营销处于同一阅读层级，用户必须自行拆分优先级。",
+      "impact_summary": "关键法务确认与可选营销授权混读，增加疲劳与不信任。",
+      "recommendation_summary": "把必选协议单独聚合，可选营销降级或后置到成功后。",
+      "discussion_prompts": [
+        "营销授权必须放在主链路里吗？",
+        "能不能在成功后再补问这些可选偏好？"
+      ]
+    },
+    {
+      "stable_id": "recovery-cta-generic__4dfab6",
+      "display_number": "ISSUE-003",
+      "title": "失败后要重新做决定，但主按钮还是含糊的“下一步”",
+      "category": "foundational experience checks",
+      "severity": "high",
+      "confidence": "high",
+      "status": "active",
+      "evidence_ids": [
+        "ev_failure_recovery"
+      ],
+      "problem_summary": "失败页让用户二选一，但按钮文案没有表达实际后果。",
+      "impact_summary": "用户在最需要确定性的节点仍然不知道点击后会发生什么。",
+      "recommendation_summary": "让按钮文案直接绑定当前分支，或改成两枚明确动作按钮。",
+      "discussion_prompts": [
+        "如果用户不主动切换选项，系统默认应该把他带去哪里？",
+        "比起卡片切换后再点一个通用按钮，直接给两个明确动作按钮会不会更清楚？"
+      ]
+    },
+    {
+      "stable_id": "external-jump-trust__7ed0dc",
+      "display_number": "ISSUE-004",
+      "title": "要跳去万豪登录了，页面却没把会不会返回和是否安全讲清楚",
+      "category": "user mental models and habits",
+      "severity": "high",
+      "confidence": "high",
+      "status": "active",
+      "evidence_ids": [
+        "ev_external_jump"
+      ],
+      "problem_summary": "页面解释了步骤，但没有解释为什么安全、会不会自动返回、失败后怎么办。",
+      "impact_summary": "用户被要求离开当前环境，却得不到足够的信任与回流预期。",
+      "recommendation_summary": "补齐信任说明、回流承诺与真实截图，而不是占位图和泛步骤说明。",
+      "discussion_prompts": [
+        "外跳后到底是自动回流、手动返回，还是刷新后才能看到结果？",
+        "用户离开飞猪之前，产品最多能给出什么级别的回流承诺？"
+      ]
+    },
+    {
+      "stable_id": "success-followthrough__3933a5",
+      "display_number": "ISSUE-005",
+      "title": "成功页宣布了结果，但没有把下一步价值接住",
+      "category": "problem and value",
+      "severity": "medium",
+      "confidence": "high",
+      "status": "active",
+      "evidence_ids": [
+        "ev_success_state"
+      ],
+      "problem_summary": "成功态强调庆祝，但没有给出清晰的后续价值承接动作。",
+      "impact_summary": "最高动机时刻没有被转成下一步价值，容易丢失后续 engagement。",
+      "recommendation_summary": "把成功页改成价值交接页，明确下一站去向与收益。",
+      "discussion_prompts": [
+        "成功后最应该把用户带去哪里：会员中心、权益说明，还是会籍结果页？",
+        "确认按钮能不能直接代表一个明确去向，而不是只写“确认”？"
+      ]
+    },
+    {
+      "stable_id": "identity-mismatch-guidance__412408",
+      "display_number": "ISSUE-006",
+      "title": "发现实名不一致时，页面没有告诉用户下一步怎么办",
+      "category": "foundational experience checks",
+      "severity": "medium",
+      "confidence": "high",
+      "status": "active",
+      "evidence_ids": [
+        "ev_bind_identity"
+      ],
+      "problem_summary": "实名确认给出了当前结果，但没有给出不一致时的可见恢复路径。",
+      "impact_summary": "一旦用户发现不一致，会停在“看见问题但不知道怎么解决”的状态。",
+      "recommendation_summary": "显式提供修改、申诉或客服兜底路径，而不是只展示结果。",
+      "discussion_prompts": [
+        "实名不一致时，用户能不能在流程内直接修正？",
+        "如果不能，最短的兜底路径是什么？"
+      ]
+    }
+  ],
+  "priorities": {
+    "highest_priority_issue_id": "routing-self-diagnosis__90f948",
+    "top_issue_ids": [
+      "routing-self-diagnosis__90f948",
+      "agreement-density__447d2a",
+      "recovery-cta-generic__4dfab6"
+    ],
+    "open_questions": [
+      {
+        "question_id": "q_001",
+        "title": "授权后系统能不能直接判断用户该走开通还是绑定？",
+        "status": "open",
+        "related_issue_ids": [
+          "routing-self-diagnosis__90f948"
+        ]
+      },
+      {
+        "question_id": "q_002",
+        "title": "如果用户最终绑定的是已有账号，哪些权益拿不到，是否必须在第一步就讲明白？",
+        "status": "open",
+        "related_issue_ids": [
+          "routing-self-diagnosis__90f948",
+          "agreement-density__447d2a"
+        ]
+      },
+      {
+        "question_id": "q_003",
+        "title": "跳去万豪登录后，系统能不能自动回到飞猪并刷新结果？",
+        "status": "open",
+        "related_issue_ids": [
+          "external-jump-trust__7ed0dc"
+        ]
+      }
+    ],
+    "next_actions": [
+      {
+        "action_id": "a_001",
+        "title": "把第一步改成用户答得出来的题，而不是继续让用户猜自己的账号状态",
+        "status": "pending",
+        "related_issue_ids": [
+          "routing-self-diagnosis__90f948"
+        ]
+      },
+      {
+        "action_id": "a_002",
+        "title": "把必选协议和可选营销拆开，别再放在同一阅读层级",
+        "status": "pending",
+        "related_issue_ids": [
+          "agreement-density__447d2a"
+        ]
+      },
+      {
+        "action_id": "a_003",
+        "title": "把失败页和外跳页的按钮、回流预期和安全说明写清楚",
+        "status": "pending",
+        "related_issue_ids": [
+          "recovery-cta-generic__4dfab6",
+          "external-jump-trust__7ed0dc"
+        ]
+      }
+    ]
+  },
+  "history": {
+    "previous_run_id": "run_20260330_yitongbai_marriott_004_contract_refresh",
+    "previous_review_date": "2026-03-30",
+    "new_issue_ids": [],
+    "resolved_issue_ids": [],
+    "changed_issue_ids": [],
+    "severity_changed_issue_ids": [],
+    "recommendation_changed_issue_ids": []
+  }
+}
