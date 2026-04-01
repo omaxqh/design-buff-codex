@@ -27,6 +27,7 @@
 `design-buff` 应该：
 
 - 以 intake board 或 frame 作为根节点
+- 如果用户给的是带 `node-id` 的精确 URL，把这个 `node-id` 当作 authoritative intake，不要悄悄换成当前 selection、文件首页或别的 board
 - 自动把大 board 拆成 screen-level review units
 - 对每个 review unit 用 `get_design_context` 精读，再用 `get_screenshot` 交叉确认
 - 只有当该 unit 已经被完整读过，才宣称高精度
@@ -35,6 +36,7 @@
 
 - 把一张巨大的 board 截图假装成精确的 screen read
 - board 太大时悄悄退化成模糊点评
+- 在已有精确 `node-id` 的情况下，默默把实际评审节点换成别的 node 却不记录原因
 - 在自己尝试自动拆分前，就让设计师先补十几个 URL
 
 ## 升级与兜底

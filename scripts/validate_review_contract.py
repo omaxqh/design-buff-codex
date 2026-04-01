@@ -10,6 +10,7 @@ from dataclasses import dataclass, field
 from html.parser import HTMLParser
 from pathlib import Path
 from typing import Dict, Iterable, List, Optional, Set
+from urllib.parse import parse_qs, urlparse
 
 
 REPO_ROOT = Path(__file__).resolve().parents[1]
@@ -163,6 +164,22 @@ def load_json(path: Path) -> Dict:
 
 def load_text(path: Path) -> str:
     return path.read_text(encoding="utf-8")
+
+
+def normalize_node_id(value: Optional[str]) -> Optional[str]:
+    if value is None:
+        return None
+    text = str(value).strip()
+    if not text:
+        return None
+    return text.replace("-", ":")
+
+
+def intake_node_from_url(url: Optional[str]) -> Optional[str]:
+    if not url:
+        return None
+    parsed = urlparse(str(url))
+    return normalize_node_id(parse_qs(parsed.query).get("node-id", [None])[0])
 
 
 def parse_html(html: str) -> Node:
@@ -429,6 +446,28 @@ def validate_review_root(review_root: Path, errors: List[str], warnings: List[st
         errors.append(f"{state_path}: meta.template_version is required")
     if not meta.get("renderer_version"):
         errors.append(f"{state_path}: meta.renderer_version is required")
+
+    intake = state.get("intake", {})
+    precise_intake_node = intake_node_from_url(intake.get("figma_intake_url"))
+    requested_node = normalize_node_id(meta.get("requested_input_node"))
+    reviewed_node = normalize_node_id(meta.get("reviewed_node"))
+    intake_node = normalize_node_id(intake.get("figma_intake_node"))
+
+    if precise_intake_node:
+        if requested_node != precise_intake_node:
+            errors.append(
+                f"{state_path}: meta.requested_input_node must match figma_intake_url node-id '{precise_intake_node}'"
+            )
+        if intake_node and intake_node != precise_intake_node:
+            errors.append(
+                f"{state_path}: intake.figma_intake_node must match figma_intake_url node-id '{precise_intake_node}'"
+            )
+
+    if requested_node and reviewed_node and requested_node != reviewed_node:
+        if not str(meta.get("reviewed_node_reason") or "").strip():
+            errors.append(
+                f"{state_path}: meta.reviewed_node_reason is required when reviewed_node differs from requested_input_node"
+            )
 
     issues = state.get("issues", [])
     for index, issue in enumerate(issues):

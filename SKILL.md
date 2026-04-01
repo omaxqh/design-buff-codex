@@ -104,6 +104,7 @@ Figma 链接需要快速规范化时，用 `scripts/parse_figma_url.py`。
 在 intake 阶段要做这些事：
 
 - 规范化输入 URL 和 node ID
+- 如果用户给的是带 `node-id` 的精确 URL，把这个 node 记录成 `requested_input_node`，不要被当前 selection 或别的 board 悄悄替换
 - 识别或创建 `review-slug`
 - 如果之前评过同一对象，先加载已有的 `report.html` 和 `review-state.json`
 - hidden scratch 只用于技术恢复，不要当正式输出
@@ -123,6 +124,7 @@ Figma 链接需要快速规范化时，用 `scripts/parse_figma_url.py`。
 - 用户没有明确要求时，不改 Figma 文件
 - 不要一上来就读整个文件
 - 用最小、但能回答当前问题的节点
+- 如果实际评审节点不得不上卷到别的 screen 或父级 page，必须写明 `reviewed_node_reason`
 - intake 根节点太大时，先自动拆 review units
 
 大 board 需要拆 screen-like 单元时，用 `scripts/pick_figma_review_units.py`。

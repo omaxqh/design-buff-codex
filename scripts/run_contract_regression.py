@@ -6,6 +6,7 @@ import shutil
 import subprocess
 import sys
 import tempfile
+import json
 from pathlib import Path
 
 
@@ -168,6 +169,15 @@ def mutate_split_tail_sections(root: Path) -> None:
     write_text(report_path, html.replace(old, new, 1))
 
 
+def mutate_precise_intake_drift(root: Path) -> None:
+    state_path = root / "design-buff-reviews" / "self-check-render-sample" / "review-state.json"
+    state = json.loads(state_path.read_text(encoding="utf-8"))
+    state["meta"]["requested_input_node"] = None
+    state["meta"]["reviewed_node"] = "0:1"
+    state["meta"]["reviewed_node_reason"] = None
+    write_text(state_path, json.dumps(state, ensure_ascii=False, indent=2) + "\n")
+
+
 def build_standalone_case(tmp_root: Path) -> Path:
     standalone = tmp_root / "invalid-standalone-desktop"
     standalone.mkdir(parents=True, exist_ok=True)
@@ -206,6 +216,10 @@ def main() -> int:
         invalid_tail = copy_valid_fixture(tmp_root, "invalid-split-tail-sections")
         mutate_split_tail_sections(invalid_tail)
         validate_fixture(invalid_tail, False, "split tail sections fail")
+
+        invalid_precise_intake = copy_valid_fixture(tmp_root, "invalid-precise-intake-drift")
+        mutate_precise_intake_drift(invalid_precise_intake)
+        validate_fixture(invalid_precise_intake, False, "precise intake drift fails")
 
         standalone = build_standalone_case(tmp_root)
         validate_fixture(standalone, False, "standalone desktop report fails")
